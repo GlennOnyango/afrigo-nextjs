@@ -5,5 +5,279 @@
   "ctaSecondary": "Learn more",
   "language": "Language",
   "english": "English",
-  "chinese": "Chinese"
+  "chinese": "Chinese",
+  "navLinks": {
+    "home": "Home",
+    "services": "Services",
+    "about": "About Us",
+    "contact": "Contact",
+    "partners": "Partners",
+    "promoter": "Promoter",
+    "resources": "Resources",
+    "news": "News"
+  },
+  "registrationPopup": {
+    "title": "WELCOME TO AFRIGO!",
+    "description": "Get Started with Kenya's #1 Business Entry Platform",
+    "information": {
+      "info-1": "500+ Launches",
+      "info-2": "24-Hour Response",
+      "info-3": "Free Consultation"
+    },
+    "form": {
+      "fullName": {
+        "label": "Full Name",
+        "placeholder": "Enter your full name"
+      },
+      "wechat": {
+        "label": "WeChat ID",
+        "description": "Priority Contact Method",
+        "placeholder": "Enter your WeChat ID"
+      },
+      "email": {
+        "label": "Email Address",
+        "placeholder": "Enter your email address"
+      },
+      "dropdown": {
+        "label": "I am a...",
+        "options": {
+          "option1": "Select Option",
+          "option2": "Chinese Business",
+          "option3": "Kenyan Business",
+          "option4": "Service Provider",
+          "option5": "Other"
+        }
+      },
+      "additionalInfo": {
+        "label": "Additional Requirements",
+        "placeholder": "Tell us what you need (optional)..."
+      }
+    },
+    "registerButton": "Get Started →",
+    "skip": "Skip for now →"
+  },
+  "home": {
+    "hero-section": {
+      "title": "YOUR TRUSTED EXECUTION DESK IN KENYA",
+      "description": "Hassle-Free Market Entry | Supply Chain Excellence | Verified Local Partnerships",
+      "description2": "500+ Successful Launches | $50M+ in Facilitated Trade | ISO Certified",
+      "service-link": "Our Services →",
+      "help-business": "Watch How We Help Businesses Launch in Kenya",
+      "quick-start": {
+        "label": "Quick Start:",
+        "links": {
+          "view-services": "View Services",
+          "partner-directory": "Partner Directory",
+          "latest-news": "Latest News"
+        }
+      }
+    },
+    "about-section": {
+      "title": "ABOUT AFRIGO",
+      "subtitle1": "Kenya's Premier Business",
+      "subtitle2": "Facilitation Platform",
+      "description1": "Since 2020, AfriGo has been the trusted bridge between China and Kenya, helping 500+ businesses successfully enter and thrive in the Kenyan market.",
+      "description2": "We provide end-to-end solutions: from supply chain management and verified partnerships to complete market entry support.",
+      "description3": "Our bilingual team handles everything - compliance, logistics, partnerships, and operations - so you can focus on growth.",
+      "about-link": "Learn More About Us →"
+    },
+    "platform-section": {
+      "title": "THE AFRIGO PLATFORM",
+      "description": "Choose your pathway to success in Kenya",
+      "service-box-1": {
+        "link": "services",
+        "icons": "🏢",
+        "title": "For Consulting Clients",
+        "description": "Complete market entry & operations support",
+        "description2": "Click to Learn More →"
+      },
+      "service-box-2": {
+        "link": "partners",
+        "icons": "🤝",
+        "title": "For Resource Partners",
+        "description": "Join our verified partner network",
+        "description2": "Click to Learn More →"
+      },
+      "service-box-3": {
+        "link": "investors",
+        "icons": "💼",
+        "title": "For Investors",
+        "description": "Your trusted execution desk in Kenya",
+        "description2": "Click to Learn More →"
+      },
+      "service-box-4": {
+        "link": "promoter",
+        "icons": "💰",
+        "title": "For Promoters",
+        "description": "Earn by referring businesses & partners",
+        "description2": "Click to Learn More →"
+      },
+      "authority-certified": "Authority Certified"
+    },
+    "how-it-works-section": {
+      "title": "HOW THE PLATFORM WORKS",
+      "steps": {
+        "step-1": {
+          "title": "Register",
+          "description": "Create your account"
+        },
+        "step-2": {
+          "title": "Select Services",
+          "description": "Choose what you need"
+        },
+        "step-3": {
+          "title": "We Execute",
+          "description": "Sit back, we handle it"
+        },
+        "step-4": {
+          "title": "Launch & Grow",
+          "description": "You're operational"
+        }
+      }
+    },
+    "services-section": {
+      "title": "OUR SERVICES",
+      "description": "Comprehensive solutions for every stage of your journey",
+      "service-links-row-1": {
+        "link-1": {
+          "title": "Supply Chain Mgmt",
+          "description": "Sourcing to distribution",
+          "description2": "Learn More →"
+        },
+        "link-2": {
+          "title": "Service Partnerships",
+          "description": "200+ verified partners",
+          "description2": "Learn More →"
+        },
+        "link-3": {
+          "title": "Resource Solutions",
+          "description": "Warehouses & offices",
+          "description2": "Learn More →"
+        }
+      },
+      "service-links-row-2": {
+        "link-1": {
+          "title": "Custom Solutions",
+          "description": "Tailored packages",
+          "description2": "Learn More →"
+        },
+        "link-2": {
+          "title": "All Services →",
+          "description": "View complete list",
+          "description2": "Learn More →"
+        }
+      }
+    },
+    "partnership-section": {
+      "title": "PARTNERSHIP OPPORTUNITIES",
+      "description": "Join our growing network and grow your business",
+      "cards": {
+        "card-1": {
+          "title": "Service Partner",
+          "description": "Provide services to Chinese businesses",
+          "description2": "Hotels, Transport, Legal, Finance, etc.",
+          "link": "Learn More →"
+        },
+        "card-2": {
+          "title": "Resource Provider",
+          "description": "Offer warehouses, offices, equipment",
+          "description2": "Real estate, facilities, infrastructure",
+          "link": "Learn More →"
+        },
+        "card-3": {
+          "title": "Rental/Lease Partner",
+          "description": "Property and equipment solutions",
+          "description2": "Commercial spaces, machinery, vehicles",
+          "link": "Learn More →"
+        }
+      },
+      "dual-ctas-link": {
+        "label-partner": "How to Be a Partner →",
+        "label-partner-directory": "Visit Partner Directory →"
+      }
+    },
+    "trusted-partners-section": {
+      "title": "TRUSTED BY 200+ VERIFIED PARTNERS"
+    },
+    "earn-by-referring-section": {
+      "title": "EARN BY REFERRING BUSINESSES",
+      "description": "Join our promoter network and earn commissions on every successful referral",
+      "tiers": {
+        "tier-1": {
+          "title": "5-10%",
+          "description": "Service Setup"
+        },
+        "tier-2": {
+          "title": "3%",
+          "description": "Monthly Recurring"
+        },
+        "tier-3": {
+          "title": "$200-500",
+          "description": "Partner Referral"
+        }
+      },
+      "cta-link": "Become a Promoter Today →"
+    },
+    "success-stories-section": {
+      "title": "SUCCESS STORIES",
+      "description": "See how we've helped businesses thrive in Kenya",
+      "stories": {
+        "story-1": {
+          "title": "AfriGo helped us launch in 45 days",
+          "description": "— Company Name, Industry"
+        },
+        "story-2": {
+          "title": "E-commerce Brand Enters Kenyan Market",
+          "description": "A Chinese e-commerce brand partnered with us for supply chain management and local partnerships. We facilitated their market entry, and they achieved profitability within the first year."
+        },
+        "story-3": {
+          "title": "Manufacturing Company Expands to Kenya",
+          "description": "We assisted a manufacturing company with logistics, warehousing, and distribution in Kenya. They successfully launched and are now serving customers across the region."
+        }
+      }
+    },
+    "unified-contact-section": {
+      "title": "Let's Get You Started. Schedule a Free Consultation.",
+      "description": "Get in touch with our team for personalized support",
+      "contact-links": {
+        "contact-us": {
+          "label": "Call Us Now",
+          "description": "Phone Support"
+        },
+        "wechat": {
+          "label": "Chat on WeChat",
+          "description": "Instant Messaging"
+        },
+        "wechat-whatsapp": {
+          "label": "Chat on WhatsApp",
+          "description": "24/7 Available"
+        },
+        "schedule": {
+          "label": "Schedule a Consultation",
+          "description": "Book a Meeting"
+        }
+      }
+    },
+    "news-cta-section": {
+      "title": "STAY INFORMED WITH LATEST NEWS",
+      "description": "Get updates on Kenya-China business, finance, and investment from trusted sources",
+      "cta-link": "Read Latest News →"
+    }
+  },
+  "footer": {
+    "company": "Company",
+    "aboutUs": "About Us",
+    "ourTeam": "Our Team",
+    "contact": "Contact",
+    "services": "Services",
+    "allServices": "All Services",
+    "supplyChain": "Supply Chain",
+    "partnership": "Partnership",
+    "forYou": "For You",
+    "becomePartner": "Become a Partner",
+    "promoterCenter": "Promoter Center",
+    "resources": "Resources",
+    "wechat": "WeChat: AfriGo",
+    "copyright": "© 2026 AfriGo. All rights reserved."
+  }
 }

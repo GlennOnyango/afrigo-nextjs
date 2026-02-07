@@ -3,7 +3,7 @@
 :root {
   --background: #f2f3f5;
   --foreground: #111318;
-  --primary: #1f5eff;
+  --primary: #1c398e;
   --secondary: #ffb55e;
   --success: #7adf8e;
 }
@@ -23,3 +23,4 @@ body {
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 }
+
