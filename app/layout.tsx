@@ -5,6 +5,7 @@ import { I18nProvider } from "./i18n-provider";
 import { Navbar } from "@/components/navbar";
 import { Footer } from "@/components/footer";
 import i18n from "./i18n";
+import { Toaster } from "@/components/ui/sonner";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -35,6 +36,13 @@ export default function RootLayout({
           <Navbar />
           {children}
           <Footer />
+          <Toaster toastOptions={{
+            classNames:{
+              toast:"!bg-gray-200",
+              title:"!text-black font-bold",
+              description:"!text-black"
+            }
+          }}/>
         </I18nProvider>
       </body>
     </html>

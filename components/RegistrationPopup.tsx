@@ -1,12 +1,26 @@
 "use client";
 
-import { useState } from "react";
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from './ui/dropdown-menu';
+import { useActionState, useState } from "react";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "./ui/dropdown-menu";
 import { useTranslation } from "react-i18next";
+import { registerPost } from "@/app/actions";
+import { showRegistrationSuccessToast } from "./ui/showRegistrationSuccessToast";
 
 export default function RegistrationPopup() {
-  const { i18n,t } = useTranslation();
+  const { i18n, t } = useTranslation();
   const [isOpen, setIsOpen] = useState(true);
+  const initialState = { success: false, message: "" };
+  const [formState, formAction] = useActionState(
+    async (state: typeof initialState, formData: FormData) => {
+      return await registerPost(formData);
+    },
+    initialState,
+  );
 
   const currentLanguage = i18n.language === "cn" ? "cn" : "en";
   if (!isOpen) return null;
@@ -53,17 +67,24 @@ export default function RegistrationPopup() {
           </p>
           <div className="flex justify-center gap-4 text-sm text-green-600">
             <span>✓ {t("registrationPopup.information.info-1")}</span>
-            <span>
-              ✓ {t("registrationPopup.information.info-2")}
-            </span>
-            <span>
-              ✓ {t("registrationPopup.information.info-3")}
-            </span>
+            <span>✓ {t("registrationPopup.information.info-2")}</span>
+            <span>✓ {t("registrationPopup.information.info-3")}</span>
           </div>
         </div>
 
         {/* Form */}
-        <form className="px-8 pb-8 space-y-5">
+        <form className="px-8 pb-8 space-y-5" action={formAction}>
+          {/* Response Message */}
+          {formState?.message && formState.success && (() => {
+            showRegistrationSuccessToast(formState.message, setIsOpen);
+            return null;
+          })()}
+
+          {formState?.message && !formState.success && (
+            <div className={`mb-4 text-center font-semibold text-red-600`}>
+              {formState.message}
+            </div>
+          )}
           {/* Full Name */}
           <div>
             <label className="block text-sm font-bold mb-2">
@@ -72,6 +93,7 @@ export default function RegistrationPopup() {
             </label>
             <input
               type="text"
+              name="fullname"
               className="w-full border-2 border-gray-300 rounded px-4 py-3 focus:outline-none focus:border-blue-900"
               placeholder={t("registrationPopup.form.fullName.placeholder")}
             />
@@ -86,6 +108,7 @@ export default function RegistrationPopup() {
             </label>
             <input
               type="text"
+              name="wechatId"
               className="w-full border-2 border-gray-300 rounded px-4 py-3 focus:outline-none focus:border-blue-900"
               placeholder={t("registrationPopup.form.wechat.placeholder")}
             />
@@ -99,6 +122,7 @@ export default function RegistrationPopup() {
             </label>
             <input
               type="email"
+              name="email"
               className="w-full border-2 border-gray-300 rounded px-4 py-3 focus:outline-none focus:border-blue-900"
               placeholder={t("registrationPopup.form.email.placeholder")}
             />
@@ -110,20 +134,23 @@ export default function RegistrationPopup() {
               {t("registrationPopup.form.dropdown.label")}{" "}
               <span className="text-red-600">*</span>
             </label>
-            <select className="w-full border-2 border-gray-300 rounded px-4 py-3 focus:outline-none focus:border-blue-900 bg-white">
+            <select
+              name="userType"
+              className="w-full border-2 border-gray-300 rounded px-4 py-3 focus:outline-none focus:border-blue-900 bg-white"
+            >
               <option value="">
                 {t("registrationPopup.form.dropdown.options.option1")}
               </option>
-              <option value="chinese-business">
+              <option value="CHINESE_BUSINESS">
                 {t("registrationPopup.form.dropdown.options.option2")}
               </option>
-              <option value="kenyan-business">
+              <option value="KENYAN_BUSINESS">
                 {t("registrationPopup.form.dropdown.options.option3")}
               </option>
-              <option value="service-partner">
+              <option value="SERVICE_PARTNER">
                 {t("registrationPopup.form.dropdown.options.option4")}
               </option>
-              <option value="other">
+              <option value="OTHER">
                 {t("registrationPopup.form.dropdown.options.option5")}
               </option>
             </select>
@@ -136,7 +163,10 @@ export default function RegistrationPopup() {
             </label>
             <textarea
               className="w-full border-2 border-gray-300 rounded px-4 py-3 focus:outline-none focus:border-blue-900 h-24 resize-none"
-              placeholder={t("registrationPopup.form.additionalInfo.placeholder")}
+              name="additionalInfo"
+              placeholder={t(
+                "registrationPopup.form.additionalInfo.placeholder",
+              )}
             />
           </div>
 
