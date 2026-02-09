@@ -264,6 +264,146 @@
       "cta-link": "阅读最新资讯 →"
     }
   },
+  "about-us": {
+    "breadcrumb": {
+      "home": "首页",
+      "about": "关于我们"
+    },
+    "hero-section": {
+      "title": "自 2020 年起连接肯尼亚与中国",
+      "description": "您跨境商业成功的合作伙伴",
+      "stats": {
+        "years-of-experience": "多年经验",
+        "successful-launches": "成功落地项目",
+        "trade-facilitated": "促成贸易额",
+        "verified-partners": "认证合作伙伴"
+      }
+    },
+    "founders-section": {
+      "title": "关于 AFRIGO 及我们的创始人",
+      "description1": "AfriGo 成立于 2020 年，由 [创始人姓名] 创办，旨在帮助中国企业解决进入肯尼亚市场时所面临的挑战。",
+      "description2": "我们的使命很简单：让跨境商业变得轻松高效。我们连接中国与肯尼亚，为市场进入、运营和增长提供端到端支持。",
+      "description3": "如今，我们已成功帮助 500 多家企业在肯尼亚落地，促成超过 5,000 万美元的贸易，并建立了由 200 多家认证合作伙伴组成的网络。"
+    },
+    "service-section": {
+      "title": "AFRIGO 服务",
+      "services-list": {
+        "link-1": {
+          "title": "供应链管理",
+          "description": "从采购到分销",
+          "description2": "了解更多 →"
+        },
+        "link-2": {
+          "title": "服务合作伙伴",
+          "description": "200+ 认证合作伙伴",
+          "description2": "了解更多 →"
+        },
+        "link-3": {
+          "title": "资源解决方案",
+          "description": "仓库与办公室",
+          "description2": "了解更多 →"
+        },
+        "link-4": {
+          "title": "定制化解决方案",
+          "description": "量身定制方案",
+          "description2": "了解更多 →"
+        }
+      },
+      "all-services-link": {
+        "title": "所有服务 →",
+        "description": "查看完整服务列表",
+        "description2": "了解更多 →"
+      }
+    },
+    "how-it-works-section": {
+      "title": "AFRIGO 如何运作",
+      "chinese-business": {
+        "title": "中国企业",
+        "description": "市场进入支持",
+        "options": {
+          "supply-chain": "供应链",
+          "local-partners": "本地合作伙伴",
+          "compliance": "合规支持"
+        }
+      },
+      "service-partner": {
+        "title": "服务合作伙伴",
+        "description": "优质客户线索",
+        "options": {
+          "direct-referrals": "直接推荐",
+          "competitive-models": "竞争性模式",
+          "support": "支持服务"
+        }
+      },
+      "kenyan-business": {
+        "title": "肯尼亚企业",
+        "description": "中国资源对接",
+        "options": {
+          "supplier-access": "供应商对接",
+          "investment-links": "投资对接",
+          "trade-support": "贸易支持"
+        }
+      }
+    },
+    "investment-cta": {
+      "title": "有意探索或投资肯尼亚？",
+      "subtitle": "我们将协助您顺利起步",
+      "description": "全程陪伴您的每一步",
+      "action-text": "立即开始 →"
+    },
+    "team": {
+      "title": "认识我们的团队",
+      "description": "中肯专家携手合作",
+      "members": {
+        "name": "姓名",
+        "position": "首席执行官",
+        "nationality": "国籍（肯尼亚）"
+      }
+    },
+    "certification": {
+      "title": "认证与合规",
+      "certs": {
+        "cert-1": {
+          "icon": "📜",
+          "description": "ISO 9001 认证"
+        },
+        "cert-2": {
+          "icon": "📋",
+          "description": "商业注册"
+        },
+        "cert-3": {
+          "icon": "🏆",
+          "description": "行业成员"
+        },
+        "cert-4": {
+          "icon": "🔒",
+          "description": "数据安全保护"
+        }
+      }
+    },
+    "unified-contact-section": {
+      "title": "让我们助您起步，预约一次免费咨询。",
+      "description": "联系我们的团队，获取个性化支持",
+      "contact-links": {
+        "contact-us": {
+          "label": "立即致电",
+          "description": "电话支持"
+        },
+        "wechat": {
+          "label": "微信咨询",
+          "description": "即时沟通"
+        },
+        "wechat-whatsapp": {
+          "label": "WhatsApp 咨询",
+          "description": "全天候 24/7 服务"
+        },
+        "schedule": {
+          "label": "预约咨询",
+          "description": "预订会议"
+        }
+      }
+    }
+  },
   "footer": {
     "company": "公司",
     "aboutUs": "关于我们",

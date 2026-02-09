@@ -453,10 +453,10 @@ export default function Home() {
               >
                 <div className="text-4xl">💬</div>
                 <span className="font-bold text-base">
-                  {t("home.unified-contact-section.contact-links.chat-wechat.label")}
+                  {t("home.unified-contact-section.contact-links.wechat.label")}
                 </span>
                 <span className="text-xs opacity-80">
-                  {t("home.unified-contact-section.contact-links.chat-wechat.description")}
+                  {t("home.unified-contact-section.contact-links.wechat.description")}
                 </span>
               </a>
 
@@ -469,10 +469,10 @@ export default function Home() {
               >
                 <div className="text-4xl">📱</div>
                 <span className="font-bold text-base">
-                  {t("home.unified-contact-section.contact-links.chat-whatsapp.label")}
+                  {t("home.unified-contact-section.contact-links.wechat-whatsapp.label")}
                 </span>
                 <span className="text-xs opacity-80">
-                  {t("home.unified-contact-section.contact-links.chat-whatsapp.description")}
+                  {t("home.unified-contact-section.contact-links.wechat-whatsapp.description")}
                 </span>
               </a>
 

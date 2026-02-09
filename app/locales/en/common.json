@@ -264,6 +264,147 @@
       "cta-link": "Read Latest News →"
     }
   },
+  "about-us": {
+    "breadcrumb": {
+      "home": "Home",
+      "about": "About"
+    },
+    "hero-section": {
+      "title": "BRIDGING KENYA & CHINA SINCE 2020",
+      "description": "Your Partner in Cross-Border Business Success",
+      "stats": {
+        "years-of-experience": "Years of Experience",
+        "successful-launches": "Successful Launches",
+        "trade-facilitated": "Trade Facilitated",
+        "verified-partners": "Verified Partners"
+      }
+    },
+    "founders-section": {
+      "title": "ABOUT AFRIGO & OUR FOUNDERS",
+      "description1": "AfriGo was founded in 2020 by [Founder Name], who envisioned fostering fruitful challenges Chinese businesses face when entering the Kenyan market.",
+      "description2": "Our mission is simple: Make cross-border business effortless. We bridge the gap between China and Kenya, providing end-to-end support for market entry, operations, and growth.",
+      "description3": "Today, we're proud to have helped 500+ businesses successfully launch in Kenya, facilitated over $50M in trade, and built a network of 200+ verified partners."
+    },
+    "service-section": {
+      "title": "AFRIGO SERVICES",
+      "services-list": {
+        "link-1": {
+          "title": "Supply Chain Mgmt",
+          "description": "Sourcing to distribution",
+          "description2": "Learn More →"
+        },
+        "link-2": {
+          "title": "Service Partnerships",
+          "description": "200+ verified partners",
+          "description2": "Learn More →"
+        },
+        "link-3": {
+          "title": "Resource Solutions",
+          "description": "Warehouses & offices",
+          "description2": "Learn More →"
+        },
+        "link-4": {
+          "title": "Custom Solutions",
+          "description": "Tailored packages",
+          "description2": "Learn More →"
+        }
+      },
+      "all-services-link": {
+        "title": "All Services →",
+        "description": "View complete service list",
+        "description2": "Learn More →"
+      }
+    },
+    "how-it-works-section": {
+      "title": "HOW AFRIGO WORKS",
+      "chinese-business": {
+        "title": "Chinese Businesses",
+        "description": "Market Entry Support",
+        "options": {
+          "supply-chain": "Supply chain",
+          "local-partners": "Local partners",
+          "compliance": "Compliance"
+        }
+      },
+      "service-partner": {
+        "title": "Service Partners",
+        "description": "Qualified Leeds",
+        "options": {
+          "direct-referrals": "Direct referrals",
+          "competitive-models": "Competitive model",
+          "support": "Support"
+        }
+      },
+      "kenyan-business": {
+        "title": "Kenyan Businesses",
+        "description": "Chinese Connections",
+        "options": {
+          "supplier-access": "Supplier access",
+          "investment-links": "Investment links",
+          "trade-support": "Trade support"
+        }
+      }
+    },
+    "investment-cta": {
+      "title": "Looking to Explore/Invest in Kenya?",
+      "subtitle": "We will Help You Get Started",
+      "description": "With you through the entire Journey",
+      "action-text": "Get Started →"
+    },
+    "team": {
+      "title": "MEET OUR TEAM",
+      "description": "Chinese & Kenyan Experts Working Together",
+      "members":{
+        "name":"Name",
+        "position":"CEO",
+        "nationality":"Nationality (Kenyan)"
+      }
+    },
+    "certification":{
+      "title":"CERTIFICATIONS & COMPLIANCE",
+      "certs":{
+        "cert-1":{
+          "icon":"📜",
+          "description":"ISO 9001"
+        },
+        "cert-2":{
+          "icon":"📋",
+          "description":"Business Registration"
+        },
+        "cert-3":{
+          "icon":"🏆",
+          "description":"Industry Member"
+
+        },
+        "cert-4":{
+          "icon":"🔒",
+          "description":"Data Protected"
+        }
+      }
+    },
+    "unified-contact-section":{
+      "title":"Let's Get You Started. Schedule a Free Consultation.",
+      "description":"Get in touch with our team for personalized support",
+      "contact-links": {
+        "contact-us": {
+          "label": "Call Us Now",
+          "description": "Phone Support"
+        },
+        "wechat": {
+          "label": "Chat on WeChat",
+          "description": "Instant Messaging"
+        },
+        "wechat-whatsapp": {
+          "label": "Chat on WhatsApp",
+          "description": "24/7 Available"
+        },
+        "schedule": {
+          "label": "Schedule a Consultation",
+          "description": "Book a Meeting"
+        }
+      }
+    }
+  },
   "footer": {
     "company": "Company",
     "aboutUs": "About Us",
