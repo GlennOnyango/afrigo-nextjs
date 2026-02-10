@@ -354,37 +354,36 @@
     "team": {
       "title": "MEET OUR TEAM",
       "description": "Chinese & Kenyan Experts Working Together",
-      "members":{
-        "name":"Name",
-        "position":"CEO",
-        "nationality":"Nationality (Kenyan)"
+      "members": {
+        "name": "Name",
+        "position": "CEO",
+        "nationality": "Nationality (Kenyan)"
       }
     },
-    "certification":{
-      "title":"CERTIFICATIONS & COMPLIANCE",
-      "certs":{
-        "cert-1":{
-          "icon":"📜",
-          "description":"ISO 9001"
+    "certification": {
+      "title": "CERTIFICATIONS & COMPLIANCE",
+      "certs": {
+        "cert-1": {
+          "icon": "📜",
+          "description": "ISO 9001"
         },
-        "cert-2":{
-          "icon":"📋",
-          "description":"Business Registration"
+        "cert-2": {
+          "icon": "📋",
+          "description": "Business Registration"
         },
-        "cert-3":{
-          "icon":"🏆",
-          "description":"Industry Member"
-
+        "cert-3": {
+          "icon": "🏆",
+          "description": "Industry Member"
         },
-        "cert-4":{
-          "icon":"🔒",
-          "description":"Data Protected"
+        "cert-4": {
+          "icon": "🔒",
+          "description": "Data Protected"
         }
       }
     },
-    "unified-contact-section":{
-      "title":"Let's Get You Started. Schedule a Free Consultation.",
-      "description":"Get in touch with our team for personalized support",
+    "unified-contact-section": {
+      "title": "Let's Get You Started. Schedule a Free Consultation.",
+      "description": "Get in touch with our team for personalized support",
       "contact-links": {
         "contact-us": {
           "label": "Call Us Now",
@@ -403,6 +402,1015 @@
           "description": "Book a Meeting"
         }
       }
+    }
+  },
+  "service": {
+    "breadcrumb": {
+      "home": "Home",
+      "service": "Services"
+    },
+    "hero-section": {
+      "title": "COMPREHENSIVE SOLUTIONS FOR KENYA-CHINA BUSINESS SUCCESS",
+      "description": "From market entry to full operations, we handle everything so you can focus on growth",
+      "stats": {
+        "successful-launches": "Successful Launches",
+        "trade-facilitated": "Trade Facilitated",
+        "verified-partners": "Day Average Setup"
+      },
+      "links": {
+        "solution": "Customize Your Solution ↓",
+        "consultation": "Schedule Free Consultation"
+      }
+    },
+    "consulting-section": {
+      "title": "FOR CONSULTING CLIENTS",
+      "description": "Complete market entry & operations support",
+      "cards": {
+        "supply-chain": {
+          "title": "Supply Chain Management",
+          "description": "End-to-end sourcing, quality control, logistics, and distribution management",
+          "items": {
+            "supplier-sourcing": "Supplier sourcing",
+            "quality-assurance": "Quality assurance",
+            "logistics-coordination": "Logistics coordination"
+          },
+          "pricing": "From $X/month",
+          "cta": "Inquire About Service ↓"
+        },
+        "service-partnerships": {
+          "title": "Service Partnerships",
+          "description": "Access 200+ verified local service providers",
+          "items": {
+            "pre-vetted": "Pre-vetted partners",
+            "quality-guarantee": "Quality guarantee",
+            "bilingual-support": "Bilingual support"
+          },
+          "pricing": "From $X/month",
+          "cta": "Inquire About Service ↓"
+        },
+        "resource-solutions": {
+          "title": "Resource Solutions",
+          "description": "Warehouses, offices, equipment and infrastructure",
+          "items": {
+            "prime-locations": "Prime locations",
+            "flexible-terms": "Flexible terms",
+            "scalable-solutions": "Scalable solutions"
+          },
+          "pricing": "Custom pricing",
+          "cta": "Inquire About Service ↓"
+        },
+        "custom-solutions": {
+          "title": "Custom Solutions",
+          "description": "Tailored packages for unique business needs",
+          "items": {
+            "flexible-approach": "Flexible approach",
+            "scalable-packages": "Scalable packages",
+            "expert-guidance": "Expert guidance"
+          },
+          "pricing": "Custom quote",
+          "cta": "Inquire About Service ↓"
+        }
+      },
+      "complete-package": {
+        "title": "COMPLETE PACKAGE",
+        "description": "All services included. Best value for full market entry",
+        "items": {
+          "all-services": "All services above",
+          "priority-support": "Priority support",
+          "dedicated-manager": "Dedicated manager"
+        },
+        "pricing": "Contact for pricing",
+        "cta": "Get Complete Package ↓"
+      }
+    },
+    "investor-section": {
+      "title": "FOR INVESTORS",
+      "description": "Your trusted execution desk in Kenya",
+      "cards": {
+        "market-entry": {
+          "title": "Market Entry Support",
+          "description": "Complete setup from registration to operations",
+          "items": {
+            "company-registration": "Company registration",
+            "bank-setup": "Bank account setup",
+            "office-establishment": "Office establishment"
+          },
+          "cta": "Inquire About Service ↓"
+        },
+        "regulatory-compliance": {
+          "title": "Regulatory Compliance",
+          "description": "Navigate Kenyan regulations with confidence",
+          "items": {
+            "licenses-permits": "Licenses & permits",
+            "tax-registration": "Tax registration",
+            "legal-compliance": "Legal compliance"
+          },
+          "cta": "Inquire About Service ↓"
+        },
+        "local-partners": {
+          "title": "Local Partner Sourcing",
+          "description": "Find and vet reliable local partners",
+          "items": {
+            "partner-identification": "Partner identification",
+            "due-diligence": "Due diligence",
+            "relationship-management": "Relationship management"
+          },
+          "cta": "Inquire About Service ↓"
+        },
+        "operations-setup": {
+          "title": "Operations Setup",
+          "description": "Get your business running smoothly",
+          "items": {
+            "staffing-hr": "Staffing & HR",
+            "systems-setup": "Systems setup",
+            "process-optimization": "Process optimization"
+          },
+          "cta": "Inquire About Service ↓"
+        }
+      },
+      "investor-package": {
+        "title": "INVESTOR PACKAGE",
+        "description": "Complete solution for serious investors",
+        "items": {
+          "all-services": "All services above",
+          "dedicated-manager": "Dedicated account manager",
+          "launch-guarantee": "30-60 day launch guarantee"
+        },
+        "cta": "Get Investor Package ↓"
+      }
+    },
+    "partners-section": {
+      "title": "FOR RESOURCE PARTNERS",
+      "description": "Join our verified partner network",
+      "benefits": {
+        "title": "PARTNER BENEFITS",
+        "items": {
+          "qualified-leads": "Qualified leads from Chinese businesses",
+          "referral-revenue": "Earn revenue through referrals",
+          "partner-manager": "Dedicated partner manager",
+          "support": "24/7 support",
+          "marketing": "Marketing exposure",
+          "grow-with-afrigo": "Grow your business with AfriGo"
+        }
+      },
+      "categories": {
+        "title": "Partner Categories:",
+        "items": {
+          "hotels": "Hotels & Accommodation",
+          "transport": "Transport & Logistics",
+          "legal": "Legal Services",
+          "financial": "Financial Services",
+          "real-estate": "Real Estate",
+          "staffing": "Staffing & HR",
+          "translation": "Translation Services",
+          "it": "IT & Technology",
+          "more": "And more..."
+        }
+      },
+      "links": {
+        "become-partner": "Become a Partner →",
+        "view-directory": "View Partner Directory →"
+      }
+    },
+    "promoters-section": {
+      "title": "FOR PROMOTERS",
+      "description": "Earn by referring businesses & partners",
+      "how-it-works": {
+        "title": "HOW IT WORKS:",
+        "steps": {
+          "step-1": {
+            "title": "Sign up as promoter",
+            "description": "Quick and easy registration"
+          },
+          "step-2": {
+            "title": "Get unique referral code/link",
+            "description": "Your personal tracking link"
+          },
+          "step-3": {
+            "title": "Refer businesses or partners",
+            "description": "Share with your network"
+          },
+          "step-4": {
+            "title": "Earn commission on conversions",
+            "description": "Get paid for successful referrals"
+          }
+        }
+      },
+      "cta": "Become a Promoter Today →"
+    },
+    "customize-section": {
+      "title": "CUSTOMIZE YOUR SOLUTION",
+      "description": "Custom make your solution by selecting a bundle of services you are seeking",
+      "steps": {
+        "step-1": {
+          "title": "Select Services",
+          "description": "Choose what you need"
+        },
+        "step-2": {
+          "title": "Submit Request",
+          "description": "Fill the form below"
+        },
+        "step-3": {
+          "title": "Get Custom Quote",
+          "description": "Within 24 hours"
+        },
+        "step-4": {
+          "title": "Launch & Succeed",
+          "description": "30-60 day setup"
+        }
+      },
+      "form": {
+        "title": "Custom Make Your Solution Now",
+        "services-label": "Select Services You Need * (Check all that apply)",
+        "groups": {
+          "consulting": "Consulting Services:",
+          "investor": "Investor Services:",
+          "packages": "Complete Packages:"
+        },
+        "services": {
+          "supply-chain": "Supply Chain Management",
+          "service-partnerships": "Service Partnerships",
+          "resource-solutions": "Resource Solutions",
+          "custom-solutions": "Custom Solutions",
+          "market-entry": "Market Entry Support",
+          "regulatory-compliance": "Regulatory Compliance",
+          "local-partners": "Local Partner Sourcing",
+          "operations-setup": "Operations Setup",
+          "complete-package": "Complete Package (All Consulting Services)",
+          "investor-package": "Investor Package (All Investor Services)"
+        },
+        "full-name": {
+          "label": "Full Name *"
+        },
+        "wechat": {
+          "label": "WeChat ID * (Priority Contact Method)"
+        },
+        "email": {
+          "label": "Email Address *"
+        },
+        "company": {
+          "label": "Company Name"
+        },
+        "industry": {
+          "label": "Industry *",
+          "placeholder": "Select Industry",
+          "options": {
+            "manufacturing": "Manufacturing",
+            "retail": "Retail",
+            "technology": "Technology",
+            "logistics": "Logistics",
+            "construction": "Construction",
+            "agriculture": "Agriculture",
+            "other": "Other"
+          }
+        },
+        "budget": {
+          "label": "Estimated Budget Range",
+          "placeholder": "Select Range",
+          "options": {
+            "under-10k": "Under $10,000",
+            "10k-50k": "$10,000 - $50,000",
+            "50k-100k": "$50,000 - $100,000",
+            "100k-250k": "$100,000 - $250,000",
+            "250k-plus": "$250,000+"
+          }
+        },
+        "timeline": {
+          "label": "When do you want to start? *",
+          "placeholder": "Select Timeline",
+          "options": {
+            "immediately": "Immediately",
+            "within-1-month": "Within 1 month",
+            "1-3-months": "1-3 months",
+            "3-6-months": "3-6 months",
+            "just-exploring": "Just exploring"
+          }
+        },
+        "details": {
+          "label": "Additional Details / Specific Requirements",
+          "placeholder": "Tell us more about your needs..."
+        },
+        "submit": "Get Custom Quote & Budget Estimate →",
+        "consent": "By submitting this form, you agree to be contacted by AfriGo regarding your inquiry."
+      }
+    },
+    "trusted-section": {
+      "title": "TRUSTED BY 500+ BUSINESSES",
+      "stars": "⭐⭐⭐⭐⭐",
+      "items": {
+        "t1": {
+          "quote": "Launched in 45 days, saved 40% on logistics",
+          "company": "Manufacturing Co.",
+          "service": "Complete Package",
+          "used": "used"
+        },
+        "t2": {
+          "quote": "Seamless office setup and staff recruitment",
+          "company": "Tech Startup",
+          "service": "Investor Package",
+          "used": "used"
+        },
+        "t3": {
+          "quote": "Outstanding support throughout entire process",
+          "company": "Retail Business",
+          "service": "Supply Chain Mgmt",
+          "used": "used"
+        }
+      }
+    },
+    "faq-section": {
+      "title": "FREQUENTLY ASKED QUESTIONS",
+      "items": {
+        "q1": {
+          "q": "Q: How much do your services cost?",
+          "a": "A: Pricing varies by service and scope. Request a quote to get a detailed estimate tailored to your needs."
+        },
+        "q2": {
+          "q": "Q: How long does setup take?",
+          "a": "A: Typically 30-60 days for full market entry. Timeline depends on complexity and service selection."
+        },
+        "q3": {
+          "q": "Q: Do you handle all the paperwork?",
+          "a": "A: Yes, we handle all legal, regulatory, and administrative requirements on your behalf."
+        },
+        "q4": {
+          "q": "Q: What support do I get after launch?",
+          "a": "A: Ongoing support, account management, and access to our partner network for continued growth."
+        },
+        "q5": {
+          "q": "Q: Can I start with one service and add more?",
+          "a": "A: Absolutely! Start small and scale as your business grows. We're flexible to your needs."
+        },
+        "q6": {
+          "q": "Q: Do you work with businesses of all sizes?",
+          "a": "A: Yes! From startups to established corporations, we tailor our services to fit your needs and budget."
+        }
+      }
+    },
+    "contact-section": {
+      "title": "Let's Get You Started. Schedule a Free Consultation.",
+      "description": "Get in touch with our team for personalized support",
+      "cards": {
+        "call": {
+          "label": "Call Us Now",
+          "description": "Phone Support"
+        },
+        "wechat": {
+          "label": "Chat on WeChat",
+          "description": "Instant Messaging"
+        },
+        "whatsapp": {
+          "label": "Chat on WhatsApp",
+          "description": "24/7 Available"
+        },
+        "schedule": {
+          "label": "Schedule Consultation",
+          "description": "Book a Meeting"
+        }
+      }
+    }
+  },
+  "resource-partners": {
+    "breadcrumb": {
+      "home": "Home",
+      "resource-partners": "Resource Partners"
+    },
+    "hero": {
+      "title": "BECOME AN AFRIGO RESOURCE PARTNER",
+      "description": "Join 200+ verified partners earning through qualified client referrals",
+      "stats": {
+        "active-partners": "Active Partners",
+        "monthly-leads": "Monthly Leads",
+        "satisfaction-rate": "Satisfaction Rate"
+      }
+    },
+    "why": {
+      "title": "WHY PARTNER WITH AFRIGO?",
+      "benefits": {
+        "b1": {
+          "title": "Qualified Leads",
+          "description": "Access Chinese businesses ready to invest in Kenya"
+        },
+        "b2": {
+          "title": "Earn Revenue",
+          "description": "Commission on every successful client referral"
+        },
+        "b3": {
+          "title": "Support",
+          "description": "Dedicated partner manager & 24/7 assistance"
+        },
+        "b4": {
+          "title": "Grow Together",
+          "description": "Scale your business with AfriGo's network"
+        }
+      }
+    },
+    "categories": {
+      "title": "PARTNER CATEGORIES",
+      "description": "We welcome partners across multiple service categories",
+      "items": {
+        "hotels": {
+          "title": "Hotels & Accommodation",
+          "description": "Serviced apartments, hotels, guesthouses"
+        },
+        "transport": {
+          "title": "Transport & Logistics",
+          "description": "Car rentals, drivers, freight"
+        },
+        "legal": {
+          "title": "Legal Services",
+          "description": "Company registration, contracts, compliance"
+        },
+        "financial": {
+          "title": "Financial Services",
+          "description": "Banking, accounting, tax advisory"
+        },
+        "real-estate": {
+          "title": "Real Estate",
+          "description": "Office space, warehouses, land"
+        },
+        "staffing": {
+          "title": "Staffing & HR",
+          "description": "Recruitment, payroll, training"
+        },
+        "translation": {
+          "title": "Translation",
+          "description": "Document translation, interpretation"
+        },
+        "other": {
+          "title": "Other Services",
+          "description": "IT, marketing, consulting, etc."
+        }
+      }
+    },
+    "directory": {
+      "title": "BROWSE OUR PARTNER DIRECTORY",
+      "description": "Explore our network of 200+ verified service partners",
+      "search": {
+        "placeholder": "Search partners by name, service, or location...",
+        "category-filter": "Category Filter",
+        "button": "Search"
+      },
+      "preview": {
+        "rating-labels": {
+          "r1": "⭐⭐⭐⭐⭐ (45 reviews)",
+          "r2": "⭐⭐⭐⭐⭐ (38 reviews)",
+          "r3": "⭐⭐⭐⭐ (29 reviews)"
+        },
+        "partners": {
+          "p1": {
+            "name": "Nairobi Grand Hotel",
+            "category": "Hotels & Accommodation",
+            "location": "Westlands"
+          },
+          "p2": {
+            "name": "Swift Transport KE",
+            "category": "Transport & Logistics",
+            "location": "Nairobi"
+          },
+          "p3": {
+            "name": "Legal Partners Ltd",
+            "category": "Legal Services",
+            "location": "CBD"
+          }
+        },
+        "buttons": {
+          "view-profile": "View Profile",
+          "contact": "Contact"
+        }
+      },
+      "browse-button": "Browse Partner Directory →"
+    },
+    "application-process": {
+      "title": "APPLICATION PROCESS",
+      "steps": {
+        "step-1": {
+          "title": "Submit Application",
+          "description": "Fill the form below"
+        },
+        "step-2": {
+          "title": "Verification",
+          "description": "48-72 hour review"
+        },
+        "step-3": {
+          "title": "Approval",
+          "description": "Set up your profile"
+        },
+        "step-4": {
+          "title": "Start Earning",
+          "description": "Receive leads immediately"
+        }
+      }
+    },
+    "form": {
+      "title": "PARTNER APPLICATION FORM",
+      "description": "Join our network of verified service providers",
+      "sections": {
+        "company-information": "Company Information",
+        "business-details": "Business Details"
+      },
+      "fields": {
+        "company-name": "Company Name *",
+        "contact-person": "Contact Person *",
+        "position": "Position *",
+        "phone-email": "Phone/Email *",
+        "business-category": "Business Category *",
+        "select-category": "Select Category",
+        "years-in-operation": "Years in Operation *",
+        "services-offered": "Services Offered *",
+        "services-offered-placeholder": "Describe your services...",
+        "location-coverage": "Location/Coverage Area *",
+        "business-reg-number": "Business Registration Number *",
+        "website": "Website (optional)",
+        "why-partner": "Why do you want to partner with AfriGo? *"
+      },
+      "submit": "Submit Application →"
+    },
+    "success-stories": {
+      "title": "PARTNER SUCCESS STORIES",
+      "stories": {
+        "s1": {
+          "quote": "+85% Occupancy Increase",
+          "detail": "Through AfriGo referrals in 6 months",
+          "partner": "Hotel Partner"
+        },
+        "s2": {
+          "quote": "Consistent Monthly Contracts",
+          "detail": "New Chinese clients every week",
+          "partner": "Logistics Co."
+        },
+        "s3": {
+          "quote": "Zero Marketing Cost",
+          "detail": "Premium clients from quality leads",
+          "partner": "Real Estate"
+        }
+      }
+    },
+    "contact": {
+      "title": "Let's Get You Started. Schedule a Free Consultation.",
+      "description": "Get in touch with our team for personalized support",
+      "cards": {
+        "call": {
+          "label": "Call Us Now",
+          "description": "Phone Support"
+        },
+        "wechat": {
+          "label": "Chat on WeChat",
+          "description": "Instant Messaging"
+        },
+        "whatsapp": {
+          "label": "Chat on WhatsApp",
+          "description": "24/7 Available"
+        },
+        "schedule": {
+          "label": "Schedule Consultation",
+          "description": "Book a Meeting"
+        }
+      }
+    },
+    "directory-page": {
+      "breadcrumb": {
+        "home": "Home",
+        "resource-partners": "Resource Partners",
+        "partner-directory": "Partner Directory"
+      },
+      "hero": {
+        "title": "PARTNER DIRECTORY",
+        "description": "Browse 200+ verified service partners across Kenya",
+        "search": {
+          "placeholder": "Search partners by name, service, or location...",
+          "all-categories": "All Categories",
+          "button": "Search"
+        }
+      },
+      "tabs": {
+        "all": "All Partners (200+)",
+        "hotels": "Hotels (28)",
+        "transport": "Transport (35)",
+        "legal": "Legal (22)",
+        "financial": "Financial (18)",
+        "real-estate": "Real Estate (31)",
+        "staffing": "Staffing (24)",
+        "translation": "Translation (15)"
+      },
+      "results": {
+        "showing": "Showing 1-12 of 200+ partners",
+        "sort": {
+          "highest-rated": "Sort by: Highest Rated",
+          "most-reviews": "Sort by: Most Reviews",
+          "newest": "Sort by: Newest",
+          "az": "Sort by: A-Z"
+        }
+      },
+      "partner-card": {
+        "reviews": "reviews",
+        "buttons": {
+          "view-profile": "View Profile",
+          "contact": "Contact"
+        }
+      },
+      "pagination": {
+        "previous": "Previous",
+        "next": "Next"
+      },
+      "cta": {
+        "title": "Want to Join Our Partner Network?",
+        "description": "Get qualified leads and grow your business with AfriGo",
+        "button": "Become a Partner →"
+      }
+    }
+  },
+  "promoter": {
+    "breadcrumb": {
+      "home": "Home",
+      "promoter-center": "Promoter Center"
+    },
+    "hero": {
+      "headline-1": "EARN COMMISSIONS BY",
+      "headline-2": "CONNECTING BUSINESSES",
+      "description": "Share your unique referral link and earn when businesses engage AfriGo services",
+      "stats": {
+        "active-promoters": "Active Promoters",
+        "paid-commissions": "Paid in Commissions",
+        "note": "Join today and start earning immediately"
+      }
+    },
+    "how-it-works": {
+      "title": "HOW IT WORKS",
+      "steps": {
+        "1": {
+          "title": "Register Free",
+          "desc": "Create your account",
+          "badge": "Takes 2 minutes"
+        },
+        "2": {
+          "title": "Get Your Link & QR",
+          "desc": "Unique tracking",
+          "badge": "Share anywhere"
+        },
+        "3": {
+          "title": "Share with Network",
+          "desc": "Social media, email",
+          "badge": "No limits"
+        },
+        "4": {
+          "title": "Earn Commissions",
+          "desc": "When businesses use AfriGo",
+          "badge": "Automatic tracking"
+        }
+      }
+    },
+    "form": {
+      "title": "BECOME A PROMOTER TODAY",
+      "subtitle": "Start earning in minutes. No experience required.",
+      "fields": {
+        "full-name": "Full Name *",
+        "email": "Email Address *",
+        "phone": "Phone Number *",
+        "wechat": "WeChat ID (optional)",
+        "how-promote-label": "How will you promote? (Social media, business network, events, etc.)",
+        "how-promote-placeholder": "Tell us about your network and how you plan to share AfriGo..."
+      },
+      "button": "Join Promoter Program →",
+      "already": "Already a promoter?",
+      "login": "Login to Dashboard",
+      "login-soon": "Login feature coming soon!"
+    },
+    "benefits": {
+      "title": "WHY BECOME AN AFRIGO PROMOTER?",
+      "items": {
+        "passive-income": {
+          "title": "Earn Passive Income",
+          "desc": "Generate commissions every time someone uses your referral link to engage AfriGo services"
+        },
+        "no-experience": {
+          "title": "No Experience Needed",
+          "desc": "We provide all the tools, training, and support you need to succeed as a promoter"
+        },
+        "tracking": {
+          "title": "Real-Time Tracking",
+          "desc": "Track your referrals, conversions, and earnings in your personal dashboard"
+        },
+        "support": {
+          "title": "Dedicated Support",
+          "desc": "Get help from our promoter success team whenever you need it"
+        },
+        "bonuses": {
+          "title": "Bonus Incentives",
+          "desc": "Earn extra bonuses for top performance and milestone achievements"
+        },
+        "anywhere": {
+          "title": "Work From Anywhere",
+          "desc": "Promote AfriGo from anywhere in the world - it's completely flexible"
+        }
+      }
+    },
+    "faq": {
+      "title": "FREQUENTLY ASKED QUESTIONS",
+      "q1": {
+        "q": "Q: How much can I earn as a promoter?",
+        "a": "Earnings vary based on referrals. Top promoters earn $2,000-5,000+ monthly."
+      },
+      "q2": {
+        "q": "Q: When do I get paid?",
+        "a": "Commissions are paid monthly via bank transfer or mobile money."
+      },
+      "q3": {
+        "q": "Q: Is there a cost to join?",
+        "a": "No! The promoter program is completely free to join."
+      },
+      "q4": {
+        "q": "Q: What kind of support do I get?",
+        "a": "You get marketing materials, training resources, and a dedicated support manager."
+      },
+      "q5": {
+        "q": "Q: Can I promote if I'm not in Kenya?",
+        "a": "Yes! You can promote from anywhere, especially if you have connections to Chinese businesses."
+      },
+      "q6": {
+        "q": "Q: How do I track my referrals?",
+        "a": "Your promoter dashboard shows real-time analytics on clicks, signups, and earnings."
+      }
+    },
+    "final-cta": {
+      "title": "Ready to Start Earning?",
+      "description": "Join 50+ promoters already earning commissions with AfriGo",
+      "button": "Become a Promoter Today →"
+    },
+    "contact-cta": {
+      "title": "Have Questions About the Promoter Program?",
+      "description": "Our team is here to help you get started",
+      "contact": "Contact Us →",
+      "schedule": "Schedule Call"
+    }
+  },
+  "news": {
+    "breadcrumb": {
+      "home": "Home",
+      "news": "News"
+    },
+    "hero": {
+      "title": "KENYA-CHINA BUSINESS NEWS",
+      "subtitle": "Stay informed with the latest updates from authoritative sources",
+      "sources-label": "Sources:"
+    },
+    "filters": {
+      "label": "FILTER BY CATEGORY:",
+      "all": "All News",
+      "financial": "Financial",
+      "business": "Business/Commercial",
+      "political": "Political & Security"
+    },
+    "featured": {
+      "title": "FEATURED NEWS",
+      "large": {
+        "category": "Financial",
+        "source": "Bloomberg",
+        "title": "Kenya Central Bank Adjusts Interest Rates for 2026 →",
+        "date": "Dec 15, 2025"
+      },
+      "small-1": {
+        "category": "Business/Commercial",
+        "source": "Reuters",
+        "title": "New Trade Agreement Signed Between Kenya and China",
+        "date": "Dec 18, 2025"
+      },
+      "small-2": {
+        "category": "Political & Security",
+        "source": "Nation",
+        "title": "Enhanced Business Security Measures for Foreign Investors",
+        "date": "Dec 14, 2025"
+      }
+    },
+    "sections": {
+      "financial": {
+        "title": "FINANCIAL NEWS",
+        "view-all": "View All →",
+        "badge": "Financial",
+        "source": "Bloomberg",
+        "items": {
+          "1": {
+            "title": "KES Currency Strengthens Against Major Currencies",
+            "date": "Dec 12, 2025"
+          },
+          "2": {
+            "title": "Kenya's GDP Growth Projected at 6.2% for 2026",
+            "date": "Dec 10, 2025"
+          },
+          "3": {
+            "title": "Nairobi Securities Exchange Reaches New High",
+            "date": "Dec 08, 2025"
+          },
+          "4": {
+            "title": "Chinese Direct Investment Increases 40% in Q4",
+            "date": "Dec 07, 2025"
+          },
+          "5": {
+            "title": "Central Bank Maintains Stable Monetary Policy",
+            "date": "Dec 05, 2025"
+          },
+          "6": {
+            "title": "Kenya-China Trade Volume Hits $10B Milestone",
+            "date": "Dec 03, 2025"
+          }
+        }
+      },
+      "business": {
+        "title": "BUSINESS/COMMERCIAL NEWS",
+        "view-all": "View All →",
+        "badge": "Business/Commercial",
+        "source": "Reuters",
+        "items": {
+          "1": {
+            "title": "Major Chinese Retailer Opens 10 New Stores in Kenya",
+            "date": "Dec 11, 2025"
+          },
+          "2": {
+            "title": "Manufacturing Sector Reports Record Production",
+            "date": "Dec 09, 2025"
+          },
+          "3": {
+            "title": "E-Commerce Growth Accelerates in East Africa",
+            "date": "Dec 08, 2025"
+          },
+          "4": {
+            "title": "New Industrial Park Opens in Nairobi's SEZ",
+            "date": "Dec 06, 2025"
+          },
+          "5": {
+            "title": "Kenya Becomes Regional Hub for Tech Startups",
+            "date": "Dec 04, 2025"
+          },
+          "6": {
+            "title": "Logistics Infrastructure Investment Expansion",
+            "date": "Dec 02, 2025"
+          }
+        }
+      },
+      "political": {
+        "title": "POLITICAL & SECURITY NEWS",
+        "view-all": "View All →",
+        "badge": "Political & Security",
+        "source": "Nation",
+        "reviews-label": "reviews",
+        "items": {
+          "1": {
+            "title": "New Investment Laws Passed to Attract Foreign Capital",
+            "date": "Dec 13, 2025"
+          },
+          "2": {
+            "title": "Kenya-China Bilateral Relations Strengthen",
+            "date": "Dec 11, 2025"
+          },
+          "3": {
+            "title": "Enhanced Security Measures for Business Districts",
+            "date": "Dec 10, 2025"
+          },
+          "4": {
+            "title": "Government Streamlines Business Registration",
+            "date": "Dec 08, 2025"
+          },
+          "5": {
+            "title": "Political Stability Attracts Foreign Investors",
+            "date": "Dec 06, 2025"
+          },
+          "6": {
+            "title": "New Visa Policies Facilitate Business Travel",
+            "date": "Dec 04, 2025"
+          }
+        }
+      }
+    },
+    "contact": {
+      "title": "Have Questions About Kenya-China Business?",
+      "subtitle": "Our team is here to help. Get in touch for personalized support.",
+      "contact": "Contact Us →",
+      "schedule": "Schedule Consultation"
+    },
+    "newsletter": {
+      "title": "Stay Updated with Kenya-China Business News",
+      "subtitle": "Get weekly insights delivered to your inbox from trusted sources",
+      "placeholder": "Enter your email address",
+      "button": "Subscribe"
+    },
+    "common": {
+      "image-placeholder": "[News Image]"
+    }
+  },
+  "contact": {
+    "breadcrumb": {
+      "home": "Home",
+      "contact": "Contact Us"
+    },
+    "hero": {
+      "title": "GET IN TOUCH WITH AFRIGO",
+      "subtitle": "We're here to help you succeed in Kenya",
+      "badge": "Response within Minutes"
+    },
+    "reach-us": {
+      "title": "MULTIPLE WAYS TO REACH US",
+      "phone": {
+        "title": "Phone",
+        "number": "+254 XXX XXX XXX",
+        "hours": "(Mon-Fri, 8AM-6PM EAT)",
+        "cta": "Call Now"
+      },
+      "email": {
+        "title": "Email",
+        "address": "info@afrigo.com",
+        "sla": "(We reply within 4 hours)",
+        "cta": "Send Email"
+      },
+      "wechat": {
+        "title": "WeChat",
+        "handle": "AfriGo_Official",
+        "note": "(Instant messaging)",
+        "cta": "Chat on WeChat"
+      },
+      "whatsapp": {
+        "title": "WhatsApp",
+        "number": "+254 XXX XXX XXX",
+        "note": "(24/7 Available)",
+        "cta": "Chat on WhatsApp"
+      }
+    },
+    "office": {
+      "title": "VISIT OUR OFFICE",
+      "map": {
+        "title": "Interactive Map",
+        "subtitle": "(Google Maps Embed)"
+      },
+      "card": {
+        "company": "AfriGo International",
+        "address-label": "Address:",
+        "address": {
+          "line1": "[Building Name]",
+          "line2": "[Street Address]",
+          "city": "Nairobi, Kenya"
+        },
+        "hours-label": "Business Hours:",
+        "hours": {
+          "weekday": "Monday – Friday: 8:00 AM – 6:00 PM",
+          "saturday": "Saturday: 9:00 AM – 2:00 PM",
+          "sunday": "Sunday: Closed"
+        },
+        "cta": "Get Directions →"
+      }
+    },
+    "form": {
+      "title": "SEND US A MESSAGE",
+      "subtitle": "We'll respond within 4 hours during business hours",
+      "fields": {
+        "full-name": "Full Name *",
+        "email": "Email Address *",
+        "phone": "Phone Number",
+        "wechat": "WeChat ID (📱 Priority)",
+        "subject": "Subject *",
+        "message": "Your Message *"
+      },
+      "subject-options": {
+        "placeholder": "Select topic",
+        "general": "General Inquiry",
+        "service": "Service Request",
+        "partnership": "Partnership Opportunity",
+        "promoter": "Promoter Program",
+        "support": "Technical Support",
+        "other": "Other"
+      },
+      "message-placeholder": "Tell us how we can help...",
+      "submit": "Send Message →"
+    },
+    "faq": {
+      "title": "FREQUENTLY ASKED QUESTIONS",
+      "q1": {
+        "q": "Q: How quickly will I get a response?",
+        "a": "We respond within 4 hours during business hours."
+      },
+      "q2": {
+        "q": "Q: Can I visit your office?",
+        "a": "Yes! We welcome visits. Please schedule in advance."
+      },
+      "q3": {
+        "q": "Q: What if I need help after hours?",
+        "a": "Contact us via WhatsApp for urgent matters. We monitor it 24/7."
+      },
+      "q4": {
+        "q": "Q: Do you offer consultations?",
+        "a": "Yes! Free 30-minute consultations for new clients."
+      },
+      "q5": {
+        "q": "Q: What are your service fees?",
+        "a": "Custom pricing. Request a free quote via our contact form."
+      },
+      "q6": {
+        "q": "Q: What languages do you support?",
+        "a": "English, Chinese (Mandarin), and Swahili."
+      }
+    },
+    "urgent": {
+      "title": "Need Immediate Help?",
+      "subtitle": "Our live chat team is available during business hours",
+      "cta": "Start Live Chat 💬"
     }
   },
   "footer": {
