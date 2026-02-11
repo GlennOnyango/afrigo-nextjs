@@ -1,7 +1,6 @@
 'use server'
 
-
-
+import { Resend } from "resend";
 import { prisma } from "@/lib/prisma";
 import { EntityType } from "@prisma/client";
 
@@ -46,6 +45,130 @@ export async function registerPost(formData: FormData) {
     return { success: false, message };
   }
 
+
+}
+
+export async function registerPartner(formData: FormData) {
+  const companyName = formData.get('companyName') as string | null;
+  const contactPerson = formData.get('contactPerson') as string | null;
+  const position = formData.get('position') as string | null;
+  const phoneOrEmail = formData.get('phoneOrEmail') as string | null;
+  const businessCategory = formData.get('businessCategory') as string | null;
+  const yearsInOperation = formData.get('yearsInOperation') as string | null;
+  const location = formData.get('location') as string | null;
+  const businessRegistrationNumber = formData.get('businessRegistrationNumber') as string | null;
+  const website = formData.get('website') as string | null;
+  const servicesOffered = formData.get('servicesOffered') as string | null;
+  const reason = formData.get('reason') as string | null;
+
+  if (!companyName || !contactPerson || !position || !phoneOrEmail || !businessCategory || !yearsInOperation || !location || !businessRegistrationNumber || !servicesOffered || !reason) {
+    return { success: false, message: "Missing required fields." };
+  }
+
+  let years: number;
+  try {
+    years = parseInt(yearsInOperation, 10);
+    if (isNaN(years)) {
+      return { success: false, message: "Invalid years in operation." };
+    }
+  } catch {
+    return { success: false, message: "Invalid years in operation." };
+  }
+
+  try {
+    const partner = await prisma.partner.create({
+      data: {
+        companyName,
+        contactPerson,
+        position,
+        phoneOrEmail,
+        businessCategory,
+        yearsInOperation: years,
+        location,
+        businessRegistrationNumber,
+        website: website || undefined,
+        servicesOffered,
+        reason,
+      },
+    });
+    return { success: true, message: "Partner application successful!", partner };
+  } catch (error: unknown) {
+    let message = "Partner application failed.";
+    if (isErrorWithMessage(error)) {
+      message = "An error occurred while submitting the application. Please try using another phone or email. Contact us if you are unable to resolve the issue.";
+    }
+    return { success: false, message };
+  }
+}
+
+export async function registerPromoter(formData: FormData) {
+  const fullName = formData.get('fullName') as string | null;
+  const email = formData.get('email') as string | null;
+  const phoneNumber = formData.get('phoneNumber') as string | null;
+  const weChatId = formData.get('weChatId') as string | null;
+  const promotePlan = formData.get('promotePlan') as string | null;
+
+  if (!fullName || !email || !phoneNumber || !promotePlan) {
+    return { success: false, message: "Missing required fields." };
+  }
+
+  try {
+    const promoter = await prisma.promoter.create({
+      data: {
+        fullName,
+        email,
+        phoneNumber,
+        weChatId: weChatId || undefined,
+        promotePlan,
+      },
+    });
+    return { success: true, message: "Promoter registration successful!", promoter };
+  } catch (error: unknown) {
+    let message = "Promoter registration failed.";
+    if (isErrorWithMessage(error)) {
+      message = "An error occurred while registering. Please try using another email address. Contact us if you are unable to resolve the issue.";
+    }
+    return { success: false, message };
+  }
+}
+
+
+
+const resend = new Resend(process.env.RESEND_API_KEY);
+
+// Accepts an object with contact form fields and sends an email with the details
+export async function testEmail(form: {
+  fullName: string;
+  email: string;
+  phone?: string;
+  wechat?: string;
+  subject: string;
+  message: string;
+}) {
+  const { fullName, email, phone, wechat, subject, message } = form;
+  const emailBody = `
+    New contact form submission:
+
+    Name: ${fullName}
+    Email: ${email}
+    Phone: ${phone || "-"}
+    WeChat: ${wechat || "-"}
+    Subject: ${subject}
+    Message: ${message}
+  `;
+  const { data, error } = await resend.emails.send({
+    from: process.env.EMAIL_FROM!,
+    to: [process.env.EMAIL_TO || "your_email@gmail.com"],
+    subject: `Contact Form: ${subject}`,
+    text: emailBody,
+  });
+  if (error) {
+    console.error(error);
+    return { ok: false };
+  }
+  return { ok: true, id: data?.id };
+}
+
 function isErrorWithMessage(error: unknown): error is { message: string } {
   return (
     typeof error === "object" &&
@@ -53,5 +176,4 @@ function isErrorWithMessage(error: unknown): error is { message: string } {
     "message" in error &&
     typeof (error as { message: unknown }).message === "string"
   );
-}
 }

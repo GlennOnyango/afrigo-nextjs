@@ -1,10 +1,42 @@
 "use client";
 
+
 import Link from "next/link";
 import { useTranslation } from "react-i18next";
+import { useState, useRef } from "react";
+import { registerPartner } from "../actions";
 
 export default function ResourcePartnersPage() {
   const { t } = useTranslation();
+  const [formState, setFormState] = useState<{ success: boolean; message: string } | null>(null);
+  const [loading, setLoading] = useState(false);
+  const formRef = useRef<HTMLFormElement>(null);
+
+  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    setLoading(true);
+    setFormState(null);
+    const formData = new FormData(e.currentTarget);
+    // Map UI field names to backend expected keys
+    formData.set("companyName", formData.get("company-name") || "");
+    formData.set("contactPerson", formData.get("contact-person") || "");
+    formData.set("position", formData.get("position") || "");
+    formData.set("phoneOrEmail", formData.get("phone-email") || "");
+    formData.set("businessCategory", formData.get("business-category") || "");
+    formData.set("yearsInOperation", formData.get("years-in-operation") || "");
+    formData.set("location", formData.get("location-coverage") || "");
+    formData.set("businessRegistrationNumber", formData.get("business-reg-number") || "");
+    formData.set("website", formData.get("website") || "");
+    formData.set("servicesOffered", formData.get("services-offered") || "");
+    formData.set("reason", formData.get("why-partner") || "");
+
+    const result = await registerPartner(formData);
+    setFormState(result);
+    setLoading(false);
+    if (result.success && formRef.current) {
+      formRef.current.reset();
+    }
+  }
 
   return (
     <div className="min-h-screen bg-white">
@@ -289,14 +321,18 @@ export default function ResourcePartnersPage() {
             {t("resource-partners.form.description")}
           </p>
 
-          <form className="bg-white rounded p-6 sm:p-8 space-y-6">
+          <form
+            className="bg-white rounded p-6 sm:p-8 space-y-6"
+            onSubmit={handleSubmit}
+            ref={formRef}
+          >
             <div>
               <h3 className="font-bold text-base sm:text-lg mb-4">
                 {t("resource-partners.form.sections.company-information")}
               </h3>
 
               <div className="space-y-4">
-                {[
+                {[ 
                   { key: "company-name", type: "text" },
                   { key: "contact-person", type: "text" },
                   { key: "position", type: "text" },
@@ -307,8 +343,10 @@ export default function ResourcePartnersPage() {
                       {t(`resource-partners.form.fields.${f.key}`)}
                     </label>
                     <input
+                      name={f.key}
                       type={f.type}
                       className="w-full border-2 border-gray-300 rounded px-4 py-3 focus:outline-none focus:border-blue-900"
+                      required
                     />
                   </div>
                 ))}
@@ -325,7 +363,11 @@ export default function ResourcePartnersPage() {
                   <label className="block text-sm font-bold mb-2">
                     {t("resource-partners.form.fields.business-category")}
                   </label>
-                  <select className="w-full border-2 border-gray-300 rounded px-4 py-3 bg-white focus:outline-none focus:border-blue-900">
+                  <select
+                    name="business-category"
+                    className="w-full border-2 border-gray-300 rounded px-4 py-3 bg-white focus:outline-none focus:border-blue-900"
+                    required
+                  >
                     <option>
                       {t("resource-partners.form.fields.select-category")}
                     </option>
@@ -371,8 +413,10 @@ export default function ResourcePartnersPage() {
                       {t(`resource-partners.form.fields.${f.key}`)}
                     </label>
                     <input
+                      name={f.key}
                       type={f.type}
                       className="w-full border-2 border-gray-300 rounded px-4 py-3 focus:outline-none focus:border-blue-900"
+                      required={f.key !== "website"}
                     />
                   </div>
                 ))}
@@ -382,10 +426,12 @@ export default function ResourcePartnersPage() {
                     {t("resource-partners.form.fields.services-offered")}
                   </label>
                   <textarea
+                    name="services-offered"
                     className="w-full border-2 border-gray-300 rounded px-4 py-3 h-24 resize-none focus:outline-none focus:border-blue-900"
                     placeholder={t(
                       "resource-partners.form.fields.services-offered-placeholder",
                     )}
+                    required
                   />
                 </div>
 
@@ -393,16 +439,28 @@ export default function ResourcePartnersPage() {
                   <label className="block text-sm font-bold mb-2">
                     {t("resource-partners.form.fields.why-partner")}
                   </label>
-                  <textarea className="w-full border-2 border-gray-300 rounded px-4 py-3 h-32 resize-none focus:outline-none focus:border-blue-900" />
+                  <textarea
+                    name="why-partner"
+                    className="w-full border-2 border-gray-300 rounded px-4 py-3 h-32 resize-none focus:outline-none focus:border-blue-900"
+                    required
+                  />
                 </div>
               </div>
             </div>
 
+            {formState && (
+              <div
+                className={`text-center font-bold p-3 rounded mb-2 ${formState.success ? "bg-green-100 text-green-800" : "bg-red-100 text-red-800"}`}
+              >
+                {formState.message}
+              </div>
+            )}
             <button
               type="submit"
               className="w-full bg-orange-500 text-white py-4 text-lg font-bold rounded hover:bg-orange-600 transition-colors"
+              disabled={loading}
             >
-              {t("resource-partners.form.submit")}
+              {loading ? t("resource-partners.form.submitting") : t("resource-partners.form.submit")}
             </button>
           </form>
         </div>

@@ -32,23 +32,29 @@ model Entity {
 }
 
 model Partner {
-  id                String  @id @default(cuid())
-  companyName       String
-  contactPerson     String
-  position          String
-  phoneOrEmail      String
-  businessCategory  String
-  yearsInOperation  Int
-  servicesOffered   String  @db.Text
+  id                         String  @id @default(cuid())
+  companyName                String
+  contactPerson              String
+  position                   String
+  phoneOrEmail               String  @unique
+  businessCategory           String
+  yearsInOperation           Int
+  location                   String
+  businessRegistrationNumber String
+  website                    String?
+  servicesOffered            String  @db.Text
+  reason                     String  @db.Text
+  cleared                    Boolean @default(false)
 }
 
 model Promoter {
-  id               String  @id @default(cuid())
-  fullName         String
-  email            String
-  phoneNumber      String
-  weChatId         String?
-  promotePlan      String  @db.Text
+  id          String  @id @default(cuid())
+  fullName    String
+  email       String  @unique
+  phoneNumber String
+  weChatId    String?
+  promotePlan String  @db.Text
+  cleared     Boolean @default(false)
 }
 
 model Service {
@@ -60,7 +66,7 @@ model Service {
 }
 
 model ServiceItem {
-  id          String  @id @default(cuid())
+  id          String @id @default(cuid())
   serviceId   String
   serviceItem String
 
@@ -68,12 +74,35 @@ model ServiceItem {
 }
 
 model Quote {
-  id                     String     @id @default(cuid())
+  id                     String    @id @default(cuid())
   fullName               String
   weChatId               String
   companyName            String?
   industry               String
   needs                  QuoteNeed
   expectedEntryDate      DateTime
-  additionalRequirements String?    @db.Text
+  additionalRequirements String?   @db.Text
+}
+
+model Contact {
+  id           String @id @default(cuid())
+  emailAddress String
+  phoneNumber  String
+  wechatId     String
+  subject      String
+  message      String @db.Text
+}
+
+model Soultions {
+  id                 String @id @default(cuid())
+  consultingServices String
+  investorService    String
+  fullName           String
+  wechatId           String
+  emailAddress       String
+  companyName        String
+  industry           String
+  budgetRange        String
+  timeLine           String
+  details            String @db.Text
 }

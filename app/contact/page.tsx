@@ -3,8 +3,40 @@
 import Link from "next/link";
 import { useTranslation } from "react-i18next";
 
+import { useState } from "react";
+import { testEmail } from "../actions";
+
 export default function ContactPage() {
   const { t } = useTranslation();
+  const [formState, setFormState] = useState<'idle' | 'loading' | 'success' | 'error'>("idle");
+  const [errorMsg, setErrorMsg] = useState<string>("");
+
+  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    setFormState("loading");
+    setErrorMsg("");
+    const form = e.currentTarget;
+    const formData = new FormData(form);
+    const fullName = formData.get("full-name") as string;
+    const email = formData.get("email") as string;
+    const phone = formData.get("phone") as string;
+    const wechat = formData.get("wechat") as string;
+    const subject = formData.get("subject") as string;
+    const message = formData.get("message") as string;
+    try {
+      const result = await testEmail({ fullName, email, phone, wechat, subject, message });
+      if (result.ok) {
+        setFormState("success");
+        form.reset();
+      } else {
+        setFormState("error");
+        setErrorMsg("Failed to send message. Please try again later.");
+      }
+    } catch {
+      setFormState("error");
+      setErrorMsg("An unexpected error occurred. Please try again later.");
+    }
+  }
 
   return (
     <div className="min-h-screen bg-white">
@@ -170,7 +202,7 @@ export default function ContactPage() {
           </h2>
           <p className="text-white text-center mb-8 sm:mb-12">{t("contact.form.subtitle")}</p>
 
-          <form className="bg-white rounded p-6 sm:p-8 space-y-6">
+          <form className="bg-white rounded p-6 sm:p-8 space-y-6" onSubmit={handleSubmit}>
             {/* Row 1 */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div>
@@ -179,6 +211,8 @@ export default function ContactPage() {
                 </label>
                 <input
                   type="text"
+                  name="full-name"
+                  required
                   className="w-full border-2 border-gray-300 rounded px-4 py-3 focus:outline-none focus:border-blue-900"
                 />
               </div>
@@ -188,6 +222,8 @@ export default function ContactPage() {
                 </label>
                 <input
                   type="email"
+                  name="email"
+                  required
                   className="w-full border-2 border-gray-300 rounded px-4 py-3 focus:outline-none focus:border-blue-900"
                 />
               </div>
@@ -201,6 +237,7 @@ export default function ContactPage() {
                 </label>
                 <input
                   type="tel"
+                  name="phone"
                   className="w-full border-2 border-gray-300 rounded px-4 py-3 focus:outline-none focus:border-blue-900"
                 />
               </div>
@@ -210,6 +247,7 @@ export default function ContactPage() {
                 </label>
                 <input
                   type="text"
+                  name="wechat"
                   className="w-full border-2 border-gray-300 rounded px-4 py-3 focus:outline-none focus:border-blue-900"
                 />
               </div>
@@ -220,14 +258,14 @@ export default function ContactPage() {
               <label className="block text-sm font-bold mb-2">
                 {t("contact.form.fields.subject")}
               </label>
-              <select className="w-full border-2 border-gray-300 rounded px-4 py-3 bg-white focus:outline-none focus:border-blue-900">
-                <option>{t("contact.form.subject-options.placeholder")}</option>
-                <option>{t("contact.form.subject-options.general")}</option>
-                <option>{t("contact.form.subject-options.service")}</option>
-                <option>{t("contact.form.subject-options.partnership")}</option>
-                <option>{t("contact.form.subject-options.promoter")}</option>
-                <option>{t("contact.form.subject-options.support")}</option>
-                <option>{t("contact.form.subject-options.other")}</option>
+              <select name="subject" required className="w-full border-2 border-gray-300 rounded px-4 py-3 bg-white focus:outline-none focus:border-blue-900">
+                <option value="">{t("contact.form.subject-options.placeholder")}</option>
+                <option value="General">{t("contact.form.subject-options.general")}</option>
+                <option value="Service">{t("contact.form.subject-options.service")}</option>
+                <option value="Partnership">{t("contact.form.subject-options.partnership")}</option>
+                <option value="Promoter">{t("contact.form.subject-options.promoter")}</option>
+                <option value="Support">{t("contact.form.subject-options.support")}</option>
+                <option value="Other">{t("contact.form.subject-options.other")}</option>
               </select>
             </div>
 
@@ -237,16 +275,25 @@ export default function ContactPage() {
                 {t("contact.form.fields.message")}
               </label>
               <textarea
+                name="message"
+                required
                 className="w-full border-2 border-gray-300 rounded px-4 py-3 h-32 sm:h-40 resize-none focus:outline-none focus:border-blue-900"
                 placeholder={t("contact.form.message-placeholder")}
               />
             </div>
 
+            {formState === "success" && (
+              <div className="text-green-600 text-center font-semibold">Message sent successfully!</div>
+            )}
+            {formState === "error" && (
+              <div className="text-red-600 text-center font-semibold">{errorMsg}</div>
+            )}
             <button
               type="submit"
-              className="w-full bg-orange-500 text-white py-4 text-lg font-bold rounded hover:bg-orange-600 transition-colors"
+              className="w-full bg-orange-500 text-white py-4 text-lg font-bold rounded hover:bg-orange-600 transition-colors disabled:opacity-60"
+              disabled={formState === "loading"}
             >
-              {t("contact.form.submit")}
+              {formState === "loading" ? "Sending..." : t("contact.form.submit")}
             </button>
           </form>
         </div>

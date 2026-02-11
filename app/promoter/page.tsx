@@ -2,9 +2,37 @@
 
 import Link from "next/link";
 import { useTranslation } from "react-i18next";
+import { useState, useRef } from "react";
+import { registerPromoter } from "../actions";
 
 export default function PromoterPage() {
   const { t } = useTranslation();
+  const [formState, setFormState] = useState<{
+    success: boolean;
+    message: string;
+  } | null>(null);
+  const [loading, setLoading] = useState(false);
+  const formRef = useRef<HTMLFormElement>(null);
+
+  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    setLoading(true);
+    setFormState(null);
+    const formData = new FormData(e.currentTarget);
+    // Map UI field names to backend expected keys
+    formData.set("fullName", formData.get("full-name") || "");
+    formData.set("email", formData.get("email") || "");
+    formData.set("phoneNumber", formData.get("phone") || "");
+    formData.set("weChatId", formData.get("wechat") || "");
+    formData.set("promotePlan", formData.get("how-promote") || "");
+
+    const result = await registerPromoter(formData);
+    setFormState(result);
+    setLoading(false);
+    if (result.success && formRef.current) {
+      formRef.current.reset();
+    }
+  }
 
   const howItWorksSteps = [
     { num: 1, key: "1" },
@@ -47,7 +75,9 @@ export default function PromoterPage() {
         <div className="absolute inset-0 bg-blue-900 opacity-60" />
 
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
-          <div className="text-4xl sm:text-5xl lg:text-6xl mb-4 sm:mb-6">💰</div>
+          <div className="text-4xl sm:text-5xl lg:text-6xl mb-4 sm:mb-6">
+            💰
+          </div>
 
           <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-white mb-3 sm:mb-4 px-4">
             {t("promoter.hero.headline-1")}
@@ -63,13 +93,17 @@ export default function PromoterPage() {
           <div className="bg-white border-2 border-gray-300 rounded p-4 sm:p-6 max-w-3xl mx-auto">
             <div className="grid grid-cols-2 gap-4 sm:gap-8">
               <div>
-                <p className="text-2xl sm:text-3xl font-bold text-blue-900 mb-2">50+</p>
+                <p className="text-2xl sm:text-3xl font-bold text-blue-900 mb-2">
+                  50+
+                </p>
                 <p className="text-xs sm:text-sm text-gray-600">
                   {t("promoter.hero.stats.active-promoters")}
                 </p>
               </div>
               <div>
-                <p className="text-2xl sm:text-3xl font-bold text-blue-900 mb-2">$100K+</p>
+                <p className="text-2xl sm:text-3xl font-bold text-blue-900 mb-2">
+                  $100K+
+                </p>
                 <p className="text-xs sm:text-sm text-gray-600">
                   {t("promoter.hero.stats.paid-commissions")}
                 </p>
@@ -123,14 +157,20 @@ export default function PromoterPage() {
             {t("promoter.form.subtitle")}
           </p>
 
-          <form className="bg-white rounded p-6 sm:p-8 space-y-6">
+          <form
+            className="bg-white rounded p-6 sm:p-8 space-y-6"
+            onSubmit={handleSubmit}
+            ref={formRef}
+          >
             <div>
               <label className="block text-sm font-bold mb-2">
                 {t("promoter.form.fields.full-name")}
               </label>
               <input
+                name="full-name"
                 type="text"
                 className="w-full border-2 border-gray-300 rounded px-4 py-3 focus:outline-none focus:border-blue-900"
+                required
               />
             </div>
 
@@ -139,8 +179,10 @@ export default function PromoterPage() {
                 {t("promoter.form.fields.email")}
               </label>
               <input
+                name="email"
                 type="email"
                 className="w-full border-2 border-gray-300 rounded px-4 py-3 focus:outline-none focus:border-blue-900"
+                required
               />
             </div>
 
@@ -149,8 +191,10 @@ export default function PromoterPage() {
                 {t("promoter.form.fields.phone")}
               </label>
               <input
+                name="phone"
                 type="tel"
                 className="w-full border-2 border-gray-300 rounded px-4 py-3 focus:outline-none focus:border-blue-900"
+                required
               />
             </div>
 
@@ -159,6 +203,7 @@ export default function PromoterPage() {
                 {t("promoter.form.fields.wechat")}
               </label>
               <input
+                name="wechat"
                 type="text"
                 className="w-full border-2 border-gray-300 rounded px-4 py-3 focus:outline-none focus:border-blue-900"
               />
@@ -169,16 +214,28 @@ export default function PromoterPage() {
                 {t("promoter.form.fields.how-promote-label")}
               </label>
               <textarea
+                name="how-promote"
                 className="w-full border-2 border-gray-300 rounded px-4 py-3 h-32 resize-none focus:outline-none focus:border-blue-900"
                 placeholder={t("promoter.form.fields.how-promote-placeholder")}
+                required
               />
             </div>
 
+            {formState && (
+              <div
+                className={`text-center font-bold p-3 rounded mb-2 ${formState.success ? "bg-green-100 text-green-800" : "bg-red-100 text-red-800"}`}
+              >
+                {formState.message}
+              </div>
+            )}
             <button
               type="submit"
               className="w-full bg-orange-500 text-white py-3 sm:py-4 text-base sm:text-lg font-bold rounded hover:bg-orange-600 transition-colors"
+              disabled={loading}
             >
-              {t("promoter.form.button")}
+              {loading
+                ? t("promoter.form.submitting")
+                : t("promoter.form.button")}
             </button>
 
             <p className="text-center text-xs sm:text-sm text-gray-600">
