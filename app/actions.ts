@@ -177,3 +177,90 @@ function isErrorWithMessage(error: unknown): error is { message: string } {
     typeof (error as { message: unknown }).message === "string"
   );
 }
+
+export async function createSolutions(formData: FormData) {
+  const consultingOptions = [
+    "supply-chain",
+    "service-partnerships",
+    "resource-solutions",
+    "custom-solutions",
+  ];
+  const investorOptions = [
+    "market-entry",
+    "regulatory-compliance",
+    "local-partners",
+    "operations-setup",
+  ];
+
+  // Helper to parse selected services from formData (comma-separated string or array)
+  function parseArray(key: string): string[] {
+    const val = formData.getAll(key);
+    if (val.length === 1 && typeof val[0] === "string" && val[0].includes(",")) {
+      return val[0].split(",").map((s) => s.trim()).filter(Boolean);
+    }
+    return val.map((v) => v.toString());
+  }
+
+  function formatServices(selected: string[], allOptions: string[], packageKey: string, allLabel: string): string {
+    if (selected.includes(packageKey)) {
+      const allSelected = allOptions.every((opt) => selected.includes(opt));
+      if (allSelected) {
+        return allLabel;
+      }
+      return selected.filter((s) => allOptions.includes(s)).join(", ");
+    }
+    return selected.filter((s) => allOptions.includes(s)).join(", ");
+  }
+
+  const consultingServicesArr = parseArray("consultingServices");
+  const investorServicesArr = parseArray("investorServices");
+  const fullName = formData.get("fullName") as string | null;
+  const wechatId = formData.get("wechatId") as string | null;
+  const emailAddress = formData.get("emailAddress") as string | null;
+  const companyName = formData.get("companyName") as string | null;
+  const industry = formData.get("industry") as string | null;
+  const budgetRange = formData.get("budgetRange") as string | null;
+  const timeLine = formData.get("timeLine") as string | null;
+  const details = formData.get("details") as string | null;
+
+  if (!fullName || !wechatId || !emailAddress) {
+    return { success: false, message: "Missing required fields." };
+  }
+
+  const consultingServices = formatServices(
+    consultingServicesArr,
+    consultingOptions,
+    "complete-package",
+    "All consulting services"
+  );
+  const investorService = formatServices(
+    investorServicesArr,
+    investorOptions,
+    "investor-package",
+    "All investor services"
+  );
+
+  try {
+    const solution = await prisma.soultions.create({
+      data: {
+        consultingServices,
+        investorService,
+        fullName,
+        wechatId,
+        emailAddress,
+        companyName: companyName || "",
+        industry: industry || "",
+        budgetRange: budgetRange || "",
+        timeLine: timeLine || "",
+        details: details || "",
+      },
+    });
+    return { success: true, message: "Solution submitted successfully!", solution };
+  } catch (error: unknown) {
+    let message = "Solution submission failed.";
+    if (isErrorWithMessage(error)) {
+      message = "An error occurred while submitting the solution.";
+    }
+    return { success: false, message };
+  }
+}
