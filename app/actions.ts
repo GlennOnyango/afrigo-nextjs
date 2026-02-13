@@ -1,12 +1,14 @@
-'use server'
+"use server";
 
 import { Resend } from "resend";
 import { prisma } from "@/lib/prisma";
 import { EntityType } from "@prisma/client";
+import { auth } from "@/lib/auth";
+import { headers } from "next/dist/server/request/headers";
 
 export async function registerPost(formData: FormData) {
-  const fullName = formData.get('fullname') as string | null;
-  const wechatId = formData.get('wechatId') as string | null;
+  const fullName = formData.get("fullname") as string | null;
+  const wechatId = formData.get("wechatId") as string | null;
   const email = formData.get("email") as string | null;
   const userType = formData.get("userType") as string | null;
   const additionalType = formData.get("additionalInfo") as string | null;
@@ -40,28 +42,40 @@ export async function registerPost(formData: FormData) {
     let message = "Registration failed.";
     // Prisma unique constraint violation error code is 'P2002'
     if (isErrorWithMessage(error)) {
-      message = "An error occured while registering, please try using another email address. Contact us if you are unable to resolve the issue.";
+      message =
+        "An error occured while registering, please try using another email address. Contact us if you are unable to resolve the issue.";
     }
     return { success: false, message };
   }
-
-
 }
 
 export async function registerPartner(formData: FormData) {
-  const companyName = formData.get('companyName') as string | null;
-  const contactPerson = formData.get('contactPerson') as string | null;
-  const position = formData.get('position') as string | null;
-  const phoneOrEmail = formData.get('phoneOrEmail') as string | null;
-  const businessCategory = formData.get('businessCategory') as string | null;
-  const yearsInOperation = formData.get('yearsInOperation') as string | null;
-  const location = formData.get('location') as string | null;
-  const businessRegistrationNumber = formData.get('businessRegistrationNumber') as string | null;
-  const website = formData.get('website') as string | null;
-  const servicesOffered = formData.get('servicesOffered') as string | null;
-  const reason = formData.get('reason') as string | null;
+  const companyName = formData.get("companyName") as string | null;
+  const contactPerson = formData.get("contactPerson") as string | null;
+  const position = formData.get("position") as string | null;
+  const phoneOrEmail = formData.get("phoneOrEmail") as string | null;
+  const businessCategory = formData.get("businessCategory") as string | null;
+  const yearsInOperation = formData.get("yearsInOperation") as string | null;
+  const location = formData.get("location") as string | null;
+  const businessRegistrationNumber = formData.get(
+    "businessRegistrationNumber",
+  ) as string | null;
+  const website = formData.get("website") as string | null;
+  const servicesOffered = formData.get("servicesOffered") as string | null;
+  const reason = formData.get("reason") as string | null;
 
-  if (!companyName || !contactPerson || !position || !phoneOrEmail || !businessCategory || !yearsInOperation || !location || !businessRegistrationNumber || !servicesOffered || !reason) {
+  if (
+    !companyName ||
+    !contactPerson ||
+    !position ||
+    !phoneOrEmail ||
+    !businessCategory ||
+    !yearsInOperation ||
+    !location ||
+    !businessRegistrationNumber ||
+    !servicesOffered ||
+    !reason
+  ) {
     return { success: false, message: "Missing required fields." };
   }
 
@@ -91,22 +105,27 @@ export async function registerPartner(formData: FormData) {
         reason,
       },
     });
-    return { success: true, message: "Partner application successful!", partner };
+    return {
+      success: true,
+      message: "Partner application successful!",
+      partner,
+    };
   } catch (error: unknown) {
     let message = "Partner application failed.";
     if (isErrorWithMessage(error)) {
-      message = "An error occurred while submitting the application. Please try using another phone or email. Contact us if you are unable to resolve the issue.";
+      message =
+        "An error occurred while submitting the application. Please try using another phone or email. Contact us if you are unable to resolve the issue.";
     }
     return { success: false, message };
   }
 }
 
 export async function registerPromoter(formData: FormData) {
-  const fullName = formData.get('fullName') as string | null;
-  const email = formData.get('email') as string | null;
-  const phoneNumber = formData.get('phoneNumber') as string | null;
-  const weChatId = formData.get('weChatId') as string | null;
-  const promotePlan = formData.get('promotePlan') as string | null;
+  const fullName = formData.get("fullName") as string | null;
+  const email = formData.get("email") as string | null;
+  const phoneNumber = formData.get("phoneNumber") as string | null;
+  const weChatId = formData.get("weChatId") as string | null;
+  const promotePlan = formData.get("promotePlan") as string | null;
 
   if (!fullName || !email || !phoneNumber || !promotePlan) {
     return { success: false, message: "Missing required fields." };
@@ -122,17 +141,20 @@ export async function registerPromoter(formData: FormData) {
         promotePlan,
       },
     });
-    return { success: true, message: "Promoter registration successful!", promoter };
+    return {
+      success: true,
+      message: "Promoter registration successful!",
+      promoter,
+    };
   } catch (error: unknown) {
     let message = "Promoter registration failed.";
     if (isErrorWithMessage(error)) {
-      message = "An error occurred while registering. Please try using another email address. Contact us if you are unable to resolve the issue.";
+      message =
+        "An error occurred while registering. Please try using another email address. Contact us if you are unable to resolve the issue.";
     }
     return { success: false, message };
   }
 }
-
-
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
@@ -195,13 +217,25 @@ export async function createSolutions(formData: FormData) {
   // Helper to parse selected services from formData (comma-separated string or array)
   function parseArray(key: string): string[] {
     const val = formData.getAll(key);
-    if (val.length === 1 && typeof val[0] === "string" && val[0].includes(",")) {
-      return val[0].split(",").map((s) => s.trim()).filter(Boolean);
+    if (
+      val.length === 1 &&
+      typeof val[0] === "string" &&
+      val[0].includes(",")
+    ) {
+      return val[0]
+        .split(",")
+        .map((s) => s.trim())
+        .filter(Boolean);
     }
     return val.map((v) => v.toString());
   }
 
-  function formatServices(selected: string[], allOptions: string[], packageKey: string, allLabel: string): string {
+  function formatServices(
+    selected: string[],
+    allOptions: string[],
+    packageKey: string,
+    allLabel: string,
+  ): string {
     if (selected.includes(packageKey)) {
       const allSelected = allOptions.every((opt) => selected.includes(opt));
       if (allSelected) {
@@ -231,13 +265,13 @@ export async function createSolutions(formData: FormData) {
     consultingServicesArr,
     consultingOptions,
     "complete-package",
-    "All consulting services"
+    "All consulting services",
   );
   const investorService = formatServices(
     investorServicesArr,
     investorOptions,
     "investor-package",
-    "All investor services"
+    "All investor services",
   );
 
   try {
@@ -255,12 +289,80 @@ export async function createSolutions(formData: FormData) {
         details: details || "",
       },
     });
-    return { success: true, message: "Solution submitted successfully!", solution };
+    return {
+      success: true,
+      message: "Solution submitted successfully!",
+      solution,
+    };
   } catch (error: unknown) {
     let message = "Solution submission failed.";
     if (isErrorWithMessage(error)) {
       message = "An error occurred while submitting the solution.";
     }
     return { success: false, message };
+  }
+}
+export async function signUp({
+  email,
+  password,
+  name,
+  image,
+}: {
+  email: string;
+  password: string;
+  name?: string;
+  image?: string;
+}) {
+  try {
+    if (!password || typeof password !== "string" || password.trim() === "") {
+      return { success: false, error: "Password is required." };
+    }
+    // name is required by the API, so default to empty string if not provided
+    const result = await auth.api.signUpEmail({
+      body: {
+        email,
+        password: password,
+        name: name ?? "",
+        ...(image ? { image } : {}),
+      },
+    });
+    if (result && result.user) {
+      return { success: true };
+    }
+    return { success: false, error: "Sign up failed" };
+  } catch (error: unknown) {
+    return {
+      success: false,
+      error: error instanceof Error ? error.message : "Sign up failed",
+    };
+  }
+}
+
+export async function signIn({
+  email,
+  password,
+}: {
+  email: string;
+  password: string;
+}) {
+  try {
+    const result = await auth.api.signInEmail({
+      body: { email, password },
+      headers: await headers(),
+    });
+    if (result && result.user) {
+      // Return user object and admin status
+      return {
+        success: true,
+        user: result.user,
+        isAdmin: result.user.role === "admin",
+      };
+    }
+    return { success: false, error: "Sign in failed" };
+  } catch (error: unknown) {
+    return {
+      success: false,
+      error: error instanceof Error ? error.message : "Sign in failed",
+    };
   }
 }

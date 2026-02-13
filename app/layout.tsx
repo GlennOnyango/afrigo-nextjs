@@ -34,15 +34,18 @@ export default function RootLayout({
       >
         <I18nProvider>
           <Navbar />
-          {children}
+          <div className="min-h-screen">{children}</div>
+
           <Footer />
-          <Toaster toastOptions={{
-            classNames:{
-              toast:"!bg-gray-200",
-              title:"!text-black font-bold",
-              description:"!text-black"
-            }
-          }}/>
+          <Toaster
+            toastOptions={{
+              classNames: {
+                toast: "!bg-gray-200",
+                title: "!text-black font-bold",
+                description: "!text-black",
+              },
+            }}
+          />
         </I18nProvider>
       </body>
     </html>
