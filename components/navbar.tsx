@@ -2,6 +2,8 @@
 
 import Link from "next/link";
 import { useTranslation } from "react-i18next";
+import { usePathname, useRouter } from "next/navigation";
+import { useTransition } from "react";
 
 import {
   DropdownMenu,
@@ -9,7 +11,8 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { usePathname } from "next/navigation";
+
+import { logout } from "@/app/actions"; // <-- adjust path
 
 const navLinks = [
   { label: "home", href: "/" },
@@ -21,10 +24,20 @@ const navLinks = [
   { label: "news", href: "/news" },
 ];
 
-export function Navbar() {
+export function Navbar({ isAuthenticated }: { isAuthenticated?: boolean }) {
   const { i18n, t } = useTranslation();
   const currentLanguage = i18n.language === "cn" ? "cn" : "en";
   const pathname = usePathname();
+  const router = useRouter();
+  const [pending, startTransition] = useTransition();
+
+  const handleLogout = () => {
+    startTransition(async () => {
+      await logout();
+      router.refresh();       // important: clears server-rendered session
+      router.push("/signin"); // optional
+    });
+  };
 
   return (
     <header className="sticky top-0 z-50 w-full border-b border-black/5 bg-white/95 backdrop-blur">
@@ -41,27 +54,43 @@ export function Navbar() {
             <Link
               key={link.label}
               href={link.href}
-              className={`transition-colors hover:text-primary ${link.href === `${pathname}` ? "text-primary" : ""} `}
-              aria-current={link.href === `${pathname}` ? "page" : undefined}
+              className={`transition-colors hover:text-primary ${
+                link.href === pathname ? "text-primary" : ""
+              }`}
+              aria-current={link.href === pathname ? "page" : undefined}
             >
               {t(`navLinks.${link.label}`)}
             </Link>
           ))}
         </nav>
 
-        <DropdownMenu>
-          <DropdownMenuTrigger className="flex items-center gap-2 rounded-full border border-black/10 px-3 py-1.5 text-sm font-medium text-foreground transition-colors hover:border-primary/40 hover:text-primary">
-            {t("language")}: {currentLanguage.toUpperCase()}
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
-            <DropdownMenuItem onClick={() => i18n.changeLanguage("en")}>
-              {t("english")}
-            </DropdownMenuItem>
-            <DropdownMenuItem onClick={() => i18n.changeLanguage("cn")}>
-              {t("chinese")}
-            </DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
+        <div className="flex items-center gap-3">
+          {/* Language dropdown */}
+          <DropdownMenu>
+            <DropdownMenuTrigger className="flex items-center gap-2 rounded-full border border-black/10 px-3 py-1.5 text-sm font-medium text-foreground transition-colors hover:border-primary/40 hover:text-primary">
+              {t("language")}: {currentLanguage.toUpperCase()}
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end">
+              <DropdownMenuItem onClick={() => i18n.changeLanguage("en")}>
+                {t("english")}
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={() => i18n.changeLanguage("cn")}>
+                {t("chinese")}
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+
+          {/* Logout button (only show when authenticated) */}
+          {isAuthenticated && (
+            <button
+              onClick={handleLogout}
+              disabled={pending}
+              className="rounded-full border border-black/10 px-3 py-1.5 text-sm font-medium transition-colors hover:border-primary/40 hover:text-primary disabled:opacity-60"
+            >
+              {pending ? "Logging out..." : "Logout"}
+            </button>
+          )}
+        </div>
       </div>
     </header>
   );

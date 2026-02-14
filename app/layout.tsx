@@ -5,6 +5,8 @@ import { I18nProvider } from "./i18n-provider";
 import { Navbar } from "@/components/navbar";
 import { Footer } from "@/components/footer";
 import i18n from "./i18n";
+import { headers } from "next/headers";
+import { auth } from "@/lib/auth";
 import { Toaster } from "@/components/ui/sonner";
 
 const geistSans = Geist({
@@ -22,18 +24,19 @@ export const metadata: Metadata = {
   description: "YOUR TRUSTED EXECUTION DESK IN KENYA",
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const session = await auth.api.getSession({ headers: await headers() });
   return (
     <html lang={i18n.language === "cn" ? "zh" : "en"}>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <I18nProvider>
-          <Navbar />
+          <Navbar isAuthenticated={!!session?.user} />
           <div className="min-h-screen">{children}</div>
 
           <Footer />

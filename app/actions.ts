@@ -385,3 +385,10 @@ export async function signIn({
     };
   }
 }
+
+export async function logout() {
+  await auth.api.signOut({
+    headers: await headers(),
+  });
+  return { success: true };
+}
