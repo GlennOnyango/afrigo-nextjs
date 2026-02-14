@@ -1,17 +1,13 @@
-import { columns, Entity } from "./columns";
+import { prisma } from "@/lib/prisma";
+import { columns } from "./columns";
 import { DataTable } from "./data-table";
 
-async function getEntities(): Promise<Entity[]> {
-  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000";
-  const url = `${baseUrl}/api/admin/entities`;
-  const res = await fetch(url, { cache: "no-store" });
-  if (!res.ok) return [];
-  const data = await res.json();
-  return data.entities || [];
-}
-
 export default async function EntitiesAdminPage() {
-  const entities = await getEntities();
+  const entitiesRaw = await prisma.entity.findMany();
+  const entities = entitiesRaw.map(entity => ({
+    ...entity,
+    additionalRequirements: entity.additionalRequirements === null ? undefined : entity.additionalRequirements,
+  }));
   return (
     <div>
       <h2 className="text-2xl font-bold mb-4">Entities Management</h2>
