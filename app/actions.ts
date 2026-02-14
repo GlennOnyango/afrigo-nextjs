@@ -214,7 +214,6 @@ export async function createSolutions(formData: FormData) {
     "operations-setup",
   ];
 
-  // Helper to parse selected services from formData (comma-separated string or array)
   function parseArray(key: string): string[] {
     const val = formData.getAll(key);
     if (
@@ -289,6 +288,25 @@ export async function createSolutions(formData: FormData) {
         details: details || "",
       },
     });
+
+    // Send email notification about the solution request
+    const emailBody = `New solution request submitted by ${fullName} (${emailAddress}):\n\n` +
+      `Consulting Services: ${consultingServices}\n` +
+      `Investor Services: ${investorService}\n` +
+      `Company Name: ${companyName || "-"}\n` +
+      `Industry: ${industry || "-"}\n` +
+      `Budget Range: ${budgetRange || "-"}\n` +
+      `Time Line: ${timeLine || "-"}\n` +
+      `WeChat ID: ${wechatId || "-"}\n` +
+      `Details: ${details || "-"}`;
+
+    await resend.emails.send({
+      from: process.env.EMAIL_FROM!,
+      to: [process.env.EMAIL_TO || "your_email@gmail.com"],
+      subject: `New Solution Request from ${fullName}`,
+      text: emailBody,
+    });
+
     return {
       success: true,
       message: "Solution submitted successfully!",

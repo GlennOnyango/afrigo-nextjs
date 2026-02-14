@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useTransition } from "react";
+import { toast } from "sonner";
 import { createSolutions } from "@/app/actions";
 import Link from "next/link";
 import { useTranslation } from "react-i18next";
@@ -888,6 +889,20 @@ export default function ServicesPage() {
                     const result = await createSolutions(formData);
                     if (result.success) {
                       setMessage("Submission successful!");
+                      toast.success("Solution submitted successfully!", {
+                        description: "Thank you for your request. We have received your solution details and will get in touch soon.",
+                        duration: 3000,
+                        position: "top-right",
+                      });
+                      setSelectedServices([]);
+                      setFullName("");
+                      setWechatId("");
+                      setEmailAddress("");
+                      setCompanyName("");
+                      setIndustry("");
+                      setBudgetRange("");
+                      setTimeLine("");
+                      setDetails("");
                     } else {
                       setMessage(result.message || "Submission failed. Please try again.");
                     }
