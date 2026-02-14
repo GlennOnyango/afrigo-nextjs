@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useTranslation } from "react-i18next";
 import { useState, useRef } from "react";
+import { toast } from "sonner";
 import { registerPromoter } from "../actions";
 
 export default function PromoterPage() {
@@ -31,6 +32,11 @@ export default function PromoterPage() {
     setLoading(false);
     if (result.success && formRef.current) {
       formRef.current.reset();
+      toast.success("Promoter registration successful!", {
+        description: "Thank you for registering as a promoter. We have received your details and will get in touch soon.",
+        duration: 3000,
+        position: "top-right",
+      });
     }
   }
 

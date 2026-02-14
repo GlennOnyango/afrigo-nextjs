@@ -4,6 +4,7 @@
 import Link from "next/link";
 import { useTranslation } from "react-i18next";
 import { useState, useRef } from "react";
+import { toast } from "sonner";
 import { registerPartner } from "../actions";
 
 export default function ResourcePartnersPage() {
@@ -35,6 +36,11 @@ export default function ResourcePartnersPage() {
     setLoading(false);
     if (result.success && formRef.current) {
       formRef.current.reset();
+      toast.success("Partner application successful!", {
+        description: "Thank you for your application. We have received your details and will get in touch soon.",
+        duration: 3000,
+        position: "top-right",
+      });
     }
   }
 
