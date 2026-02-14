@@ -4,7 +4,7 @@ import { Resend } from "resend";
 import { prisma } from "@/lib/prisma";
 import { EntityType } from "@prisma/client";
 import { auth } from "@/lib/auth";
-import { headers } from "next/dist/server/request/headers";
+import { headers } from "next/headers";
 
 export async function registerPost(formData: FormData) {
   const fullName = formData.get("fullname") as string | null;
@@ -290,7 +290,8 @@ export async function createSolutions(formData: FormData) {
     });
 
     // Send email notification about the solution request
-    const emailBody = `New solution request submitted by ${fullName} (${emailAddress}):\n\n` +
+    const emailBody =
+      `New solution request submitted by ${fullName} (${emailAddress}):\n\n` +
       `Consulting Services: ${consultingServices}\n` +
       `Investor Services: ${investorService}\n` +
       `Company Name: ${companyName || "-"}\n` +
