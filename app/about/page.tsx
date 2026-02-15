@@ -44,25 +44,25 @@ export default function AboutPage() {
             <div className="bg-blue-900 text-white p-4 sm:p-6 rounded">
               <p className="text-3xl sm:text-4xl font-bold mb-2">6+</p>
               <p className="text-xs sm:text-sm">
-                {t("about-us.hero-section.years-of-experience")}
+                {t("about-us.hero-section.stats.years-of-experience")}
               </p>
             </div>
             <div className="bg-blue-900 text-white p-4 sm:p-6 rounded">
               <p className="text-3xl sm:text-4xl font-bold mb-2">500+</p>
               <p className="text-xs sm:text-sm">
-                {t("about-us.hero-section.successful-launches")}
+                {t("about-us.hero-section.stats.successful-launches")}
               </p>
             </div>
             <div className="bg-blue-900 text-white p-4 sm:p-6 rounded">
               <p className="text-3xl sm:text-4xl font-bold mb-2">$50M+</p>
               <p className="text-xs sm:text-sm">
-                {t("about-us.hero-section.trade-facilitated")}
+                {t("about-us.hero-section.stats.trade-facilitated")}
               </p>
             </div>
             <div className="bg-blue-900 text-white p-4 sm:p-6 rounded">
               <p className="text-3xl sm:text-4xl font-bold mb-2">200+</p>
               <p className="text-xs sm:text-sm">
-                {t("about-us.hero-section.verified-partners")}
+                {t("about-us.hero-section.stats.verified-partners")}
               </p>
             </div>
           </div>
