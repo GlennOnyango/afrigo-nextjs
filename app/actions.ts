@@ -5,6 +5,9 @@ import { prisma } from "@/lib/prisma";
 import { EntityType } from "@prisma/client";
 import { auth } from "@/lib/auth";
 import { headers } from "next/headers";
+import { createHmac, randomUUID } from "node:crypto";
+import { mkdir, writeFile } from "node:fs/promises";
+import path from "node:path";
 
 export async function registerPost(formData: FormData) {
   const fullName = formData.get("fullname") as string | null;
@@ -132,6 +135,21 @@ export async function registerPromoter(formData: FormData) {
   }
 
   try {
+    const referralCode = await generateUniqueReferralCode();
+
+    const siteUrl =
+      normalizeConfiguredBaseUrl(
+        process.env.NEXT_PUBLIC_SITE_URL || process.env.APP_URL,
+      ) || "http://localhost:3000";
+    const referralLink = new URL(`/r/${referralCode}`, `${siteUrl}/`).toString();
+    let qrImageUrl = `https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=${encodeURIComponent(referralLink)}`;
+
+    try {
+      qrImageUrl = await generateAndSaveQrCode(referralCode, referralLink);
+    } catch (qrError) {
+      console.error("Failed to save local QR image, using remote QR URL.", qrError);
+    }
+
     const promoter = await prisma.promoter.create({
       data: {
         fullName,
@@ -139,14 +157,44 @@ export async function registerPromoter(formData: FormData) {
         phoneNumber,
         weChatId: weChatId || undefined,
         promotePlan,
+        referralCode,
+        referralLink,
+        qrImageUrl,
       },
     });
+
+    const qrImageAbsoluteUrl = qrImageUrl.startsWith("http")
+      ? qrImageUrl
+      : new URL(qrImageUrl, `${siteUrl}/`).toString();
+
+    const recipients = [email, process.env.EMAIL_TO].filter(
+      (recipient): recipient is string => Boolean(recipient),
+    );
+
+    await resend.emails.send({
+      from: process.env.EMAIL_FROM!,
+      to: recipients,
+      subject: "Your AfriGo referral link and QR code",
+      html:
+        `<p>Hi ${fullName},</p>` +
+        "<p>Your promoter referral assets are ready.</p>" +
+        `<p><strong>Referral link:</strong> <a href=\"${referralLink}\">${referralLink}</a></p>` +
+        `<p><strong>QR code:</strong><br /><img src=\"${qrImageAbsoluteUrl}\" alt=\"Referral QR\" width=\"220\" height=\"220\" /></p>`,
+      text:
+        `Hi ${fullName},\n\n` +
+        "Your promoter referral assets are ready.\n" +
+        `Referral link: ${referralLink}\n` +
+        `QR code: ${qrImageAbsoluteUrl}\n\n` +
+        "Each valid click/scan will be tracked to your account.\n",
+    });
+
     return {
       success: true,
       message: "Promoter registration successful!",
       promoter,
     };
   } catch (error: unknown) {
+    console.error("Error registering promoter:", error);
     let message = "Promoter registration failed.";
     if (isErrorWithMessage(error)) {
       message =
@@ -154,6 +202,70 @@ export async function registerPromoter(formData: FormData) {
     }
     return { success: false, message };
   }
+}
+
+async function generateUniqueReferralCode() {
+  const secret = process.env.REFERRAL_HASH_SECRET || "afri-go-referral";
+
+  for (let i = 0; i < 5; i += 1) {
+    const candidate = createHmac("sha256", secret)
+      .update(`${randomUUID()}:${Date.now()}:${Math.random()}`)
+      .digest("hex")
+      .slice(0, 24);
+
+    const existing = await prisma.promoter.findUnique({
+      where: { referralCode: candidate },
+      select: { id: true },
+    });
+
+    if (!existing) {
+      return candidate;
+    }
+  }
+
+  throw new Error("Failed to generate a unique referral code");
+}
+
+function normalizeConfiguredBaseUrl(rawUrl?: string) {
+  if (!rawUrl) {
+    return null;
+  }
+
+  const cleaned = rawUrl.trim().replace(/^['"]|['"]$/g, "");
+  if (!cleaned) {
+    return null;
+  }
+
+  const withProtocol = /^https?:\/\//i.test(cleaned)
+    ? cleaned
+    : cleaned.startsWith("localhost") || cleaned.startsWith("127.0.0.1")
+      ? `http://${cleaned}`
+      : `https://${cleaned}`;
+
+  try {
+    return new URL(withProtocol).origin;
+  } catch {
+    return null;
+  }
+}
+
+async function generateAndSaveQrCode(referralCode: string, referralLink: string) {
+  const qrApiUrl = `https://api.qrserver.com/v1/create-qr-code/?size=300x300&format=png&data=${encodeURIComponent(referralLink)}`;
+  const response = await fetch(qrApiUrl, { cache: "no-store" });
+
+  if (!response.ok) {
+    throw new Error(`QR API request failed with status ${response.status}`);
+  }
+
+  const qrBuffer = Buffer.from(await response.arrayBuffer());
+  const qrDir = path.join(process.cwd(), "public", "referrals");
+  await mkdir(qrDir, { recursive: true });
+
+  const fileName = `${referralCode}.png`;
+  const filePath = path.join(qrDir, fileName);
+  await writeFile(filePath, qrBuffer);
+
+  return `/referrals/${fileName}`;
 }
 
 const resend = new Resend(process.env.RESEND_API_KEY);

@@ -54,7 +54,13 @@ model Promoter {
   phoneNumber String
   weChatId    String?
   promotePlan String  @db.Text
-  cleared     Boolean @default(false)
+
+  referralCode String @unique
+  referralLink String
+  qrImageUrl   String
+  referrals    Int     @default(0)
+
+  cleared Boolean @default(false)
 }
 
 model Service {
