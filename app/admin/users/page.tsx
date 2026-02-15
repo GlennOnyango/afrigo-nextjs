@@ -9,8 +9,10 @@ import {
 } from "@/components/ui/table";
 import { revalidatePath } from "next/cache";
 
-async function setUserAsAdmin(id: string) {
+
+async function setUserAsAdmin(formData: FormData) {
   "use server";
+  const id = formData.get("userId") as string;
   await prisma.user.update({
     where: { id },
     data: { role: "admin", isAdmin: true },
@@ -43,7 +45,8 @@ export default async function UsersAdminPage() {
               <TableCell>{user.isAdmin ? "Yes" : "No"}</TableCell>
               <TableCell>
                 {user.role !== "admin" && (
-                  <form action={async () => { await setUserAsAdmin(user.id); }}>
+                  <form action={setUserAsAdmin}>
+                    <input type="hidden" name="userId" value={user.id} />
                     <button
                       className="bg-blue-600 text-white px-3 py-1 rounded"
                       type="submit"
