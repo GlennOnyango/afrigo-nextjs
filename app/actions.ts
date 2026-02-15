@@ -139,7 +139,7 @@ export async function registerPromoter(formData: FormData) {
 
     const siteUrl =
       normalizeConfiguredBaseUrl(
-        process.env.NEXT_PUBLIC_SITE_URL || process.env.APP_URL,
+        process.env.NEXT_PUBLIC_SITE_URL,
       ) || "http://localhost:3000";
     const referralLink = new URL(`/r/${referralCode}`, `${siteUrl}/`).toString();
     let qrImageUrl = `https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=${encodeURIComponent(referralLink)}`;
