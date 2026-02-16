@@ -37,3 +37,16 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/bui
 
 pnpm exec prisma migrate dev --name add_role_to_user 
 pnpm prisma generate
+
+## Railway bucket env vars for QR storage
+
+Set these env vars in Railway for QR uploads:
+
+- `AWS_ACCESS_KEY_ID`
+- `AWS_SECRET_ACCESS_KEY`
+- `AWS_ENDPOINT_URL_S3`
+- `BUCKET_NAME`
+
+Optional:
+
+- `AWS_REGION` (defaults to `us-east-1` if omitted)

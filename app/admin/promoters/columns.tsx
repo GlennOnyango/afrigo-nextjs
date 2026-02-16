@@ -90,6 +90,7 @@ export function getPromoterColumns(toggleCleared: (id: string, cleared: boolean)
                 className="h-16 w-16 rounded border object-contain"
               />
             </a>
+            <p>{qrUrl}</p>
             <a href={qrUrl} target="_blank" rel="noreferrer" className="text-blue-700 underline">
               Open
             </a>

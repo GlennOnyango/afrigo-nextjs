@@ -4,10 +4,9 @@ import { Resend } from "resend";
 import { prisma } from "@/lib/prisma";
 import { EntityType } from "@prisma/client";
 import { auth } from "@/lib/auth";
+import { referralQrApiPath, uploadReferralQrCode } from "@/lib/railway-bucket";
 import { headers } from "next/headers";
 import { createHmac, randomUUID } from "node:crypto";
-import { mkdir, writeFile } from "node:fs/promises";
-import path from "node:path";
 
 export async function registerPost(formData: FormData) {
   const fullName = formData.get("fullname") as string | null;
@@ -145,9 +144,12 @@ export async function registerPromoter(formData: FormData) {
     let qrImageUrl = `https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=${encodeURIComponent(referralLink)}`;
 
     try {
-      qrImageUrl = await generateAndSaveQrCode(referralCode, referralLink);
+      qrImageUrl = await generateAndStoreQrCode(referralCode, referralLink);
     } catch (qrError) {
-      console.error("Failed to save local QR image, using remote QR URL.", qrError);
+      console.error(
+        "Failed to upload QR image to Railway bucket, using remote QR URL.",
+        qrError,
+      );
     }
 
     const promoter = await prisma.promoter.create({
@@ -170,6 +172,7 @@ export async function registerPromoter(formData: FormData) {
     const recipients = [email, process.env.EMAIL_TO].filter(
       (recipient): recipient is string => Boolean(recipient),
     );
+
 
     await resend.emails.send({
       from: process.env.EMAIL_FROM!,
@@ -249,7 +252,7 @@ function normalizeConfiguredBaseUrl(rawUrl?: string) {
   }
 }
 
-async function generateAndSaveQrCode(referralCode: string, referralLink: string) {
+async function generateAndStoreQrCode(referralCode: string, referralLink: string) {
   const qrApiUrl = `https://api.qrserver.com/v1/create-qr-code/?size=300x300&format=png&data=${encodeURIComponent(referralLink)}`;
   const response = await fetch(qrApiUrl, { cache: "no-store" });
 
@@ -257,15 +260,9 @@ async function generateAndSaveQrCode(referralCode: string, referralLink: string)
     throw new Error(`QR API request failed with status ${response.status}`);
   }
 
-  const qrBuffer = Buffer.from(await response.arrayBuffer());
-  const qrDir = path.join(process.cwd(), "public", "referrals");
-  await mkdir(qrDir, { recursive: true });
-
-  const fileName = `${referralCode}.png`;
-  const filePath = path.join(qrDir, fileName);
-  await writeFile(filePath, qrBuffer);
-
-  return `/referrals/${fileName}`;
+  const qrBuffer = new Uint8Array(await response.arrayBuffer());
+  await uploadReferralQrCode(referralCode, qrBuffer);
+  return referralQrApiPath(referralCode);
 }
 
 const resend = new Resend(process.env.RESEND_API_KEY);

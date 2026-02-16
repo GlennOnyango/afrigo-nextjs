@@ -11,6 +11,7 @@
     "seed:referrals": "node prisma/migrations/seed-referrals.mjs"
   },
   "dependencies": {
+    "@aws-sdk/client-s3": "^3.990.0",
     "@prisma/adapter-pg": "^7.3.0",
     "@prisma/client": "^7.3.0",
     "@radix-ui/react-dropdown-menu": "^2.1.6",
