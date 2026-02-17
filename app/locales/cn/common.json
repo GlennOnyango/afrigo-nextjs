@@ -984,14 +984,14 @@
         }
       },
       "tabs": {
-        "all": "所有合作伙伴（200+）",
-        "hotels": "酒店（28）",
-        "transport": "运输（35）",
-        "legal": "法律（22）",
-        "financial": "金融（18）",
-        "real-estate": "房地产（31）",
-        "staffing": "人员配置（24）",
-        "translation": "翻译（15）"
+        "all": "所有合作伙伴",
+        "hotels": "酒店",
+        "transport": "运输",
+        "legal": "法律",
+        "financial": "金融",
+        "real-estate": "房地产",
+        "staffing": "人员配置",
+        "translation": "翻译"
       },
       "results": {
         "showing": "显示 200+ 合作伙伴中的 1-12 个",
@@ -1008,6 +1008,18 @@
           "view-profile": "查看资料",
           "contact": "联系"
         }
+      },
+      "profile-dialog": {
+        "description": "简介",
+        "no-description": "暂无简介。",
+        "business-category": "业务类别",
+        "years-in-operation": "运营年限",
+        "location": "位置",
+        "contact-information": "联系信息",
+        "contact-person": "联系人",
+        "phone-or-email": "电话/邮箱",
+        "visit-website": "访问网站",
+        "close": "关闭"
       },
       "pagination": {
         "previous": "上一页",

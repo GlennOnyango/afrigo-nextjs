@@ -2,11 +2,206 @@
 
 import Link from "next/link";
 import { useTranslation } from "react-i18next";
+import { useEffect, useMemo, useState } from "react";
 
-// If Footer expects language prop, update Footer to use i18n language internally,
-// or pass i18n.language instead.
+import {
+  PARTNER_CATEGORY_KEYS,
+  type PartnerCategoryFilter,
+  type PartnerCategoryKey,
+} from "@/lib/partners";
+import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+
+type PartnerDirectoryItem = {
+  id: string;
+  companyName: string;
+  contactPerson: string;
+  phoneOrEmail: string;
+  businessCategory: string;
+  yearsInOperation: number;
+  location: string;
+  servicesOffered: string;
+  website: string | null;
+  categoryKey: PartnerCategoryKey;
+};
+
+type PartnerResponse = {
+  partners: PartnerDirectoryItem[];
+  meta: {
+    page: number;
+    pageSize: number;
+    total: number;
+    totalPages: number;
+    hasPreviousPage: boolean;
+    hasNextPage: boolean;
+    categoryCounts: Record<PartnerCategoryFilter, number>;
+  };
+};
+
+const PAGE_SIZE = 12;
+const tabCategories: PartnerCategoryFilter[] = [
+  "all",
+  "hotels",
+  "transport",
+  "legal",
+  "financial",
+  "real-estate",
+  "staffing",
+  "translation",
+];
+const selectCategories: PartnerCategoryFilter[] = ["all", ...PARTNER_CATEGORY_KEYS];
+
+function createEmptyCategoryCounts(): Record<PartnerCategoryFilter, number> {
+  return {
+    all: 0,
+    hotels: 0,
+    transport: 0,
+    legal: 0,
+    financial: 0,
+    "real-estate": 0,
+    staffing: 0,
+    translation: 0,
+    other: 0,
+  };
+}
+
+function getPartnerContactHref(phoneOrEmail: string) {
+  return phoneOrEmail.includes("@")
+    ? `mailto:${phoneOrEmail}`
+    : `tel:${phoneOrEmail}`;
+}
+
+function buildPageItems(currentPage: number, totalPages: number) {
+  if (totalPages <= 1) {
+    return [1];
+  }
+
+  const pages = new Set<number>([1, totalPages, currentPage]);
+  if (currentPage - 1 > 1) pages.add(currentPage - 1);
+  if (currentPage - 2 > 1) pages.add(currentPage - 2);
+  if (currentPage + 1 < totalPages) pages.add(currentPage + 1);
+  if (currentPage + 2 < totalPages) pages.add(currentPage + 2);
+
+  const sortedPages = Array.from(pages).sort((a, b) => a - b);
+  const items: Array<number | "ellipsis"> = [];
+
+  for (let index = 0; index < sortedPages.length; index += 1) {
+    const page = sortedPages[index];
+    const previous = sortedPages[index - 1];
+
+    if (index > 0 && page - previous > 1) {
+      items.push("ellipsis");
+    }
+
+    items.push(page);
+  }
+
+  return items;
+}
+
 export default function PartnerDirectoryPage() {
   const { t } = useTranslation();
+  const [searchInput, setSearchInput] = useState("");
+  const [searchQuery, setSearchQuery] = useState("");
+  const [categoryFilter, setCategoryFilter] =
+    useState<PartnerCategoryFilter>("all");
+  const [partners, setPartners] = useState<PartnerDirectoryItem[]>([]);
+  const [selectedPartner, setSelectedPartner] =
+    useState<PartnerDirectoryItem | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState("");
+  const [meta, setMeta] = useState<PartnerResponse["meta"]>({
+    page: 1,
+    pageSize: PAGE_SIZE,
+    total: 0,
+    totalPages: 1,
+    hasPreviousPage: false,
+    hasNextPage: false,
+    categoryCounts: createEmptyCategoryCounts(),
+  });
+
+  useEffect(() => {
+    let mounted = true;
+
+    async function fetchPartners() {
+      setIsLoading(true);
+      setError("");
+
+      const params = new URLSearchParams({
+        page: String(meta.page),
+        pageSize: String(PAGE_SIZE),
+        q: searchQuery,
+        category: categoryFilter,
+      });
+
+      try {
+        const response = await fetch(`/api/partners?${params.toString()}`);
+        if (!response.ok) {
+          throw new Error("failed to fetch");
+        }
+
+        const data: PartnerResponse = await response.json();
+        if (!mounted) {
+          return;
+        }
+
+        setPartners(data.partners ?? []);
+        setMeta(data.meta);
+      } catch {
+        if (!mounted) {
+          return;
+        }
+
+        setPartners([]);
+        setError("Failed to load partners.");
+      } finally {
+        if (mounted) {
+          setIsLoading(false);
+        }
+      }
+    }
+
+    fetchPartners();
+
+    return () => {
+      mounted = false;
+    };
+  }, [categoryFilter, meta.page, searchQuery]);
+
+  const paginationItems = useMemo(
+    () => buildPageItems(meta.page, meta.totalPages),
+    [meta.page, meta.totalPages],
+  );
+
+  function handleSearchSubmit(event: React.FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    setSearchQuery(searchInput.trim());
+    setMeta((previous) => ({ ...previous, page: 1 }));
+  }
+
+  function setCategory(category: PartnerCategoryFilter) {
+    setCategoryFilter(category);
+    setMeta((previous) => ({ ...previous, page: 1 }));
+  }
+
+  function handlePageChange(page: number) {
+    if (page < 1 || page > meta.totalPages || page === meta.page) {
+      return;
+    }
+
+    setMeta((previous) => ({ ...previous, page }));
+  }
+
+  const start = meta.total === 0 ? 0 : (meta.page - 1) * meta.pageSize + 1;
+  const end = Math.min(meta.page * meta.pageSize, meta.total);
+  const showHotelContact = selectedPartner?.categoryKey === "hotels";
 
   return (
     <div className="min-h-screen bg-white">
@@ -46,52 +241,43 @@ export default function PartnerDirectoryPage() {
             {t("resource-partners.directory-page.hero.description")}
           </p>
 
-          {/* Search Bar */}
-          <div className="flex flex-col sm:flex-row gap-4 max-w-4xl mx-auto">
+          <form
+            className="flex flex-col sm:flex-row gap-4 max-w-4xl mx-auto"
+            onSubmit={handleSearchSubmit}
+          >
             <input
               type="text"
+              value={searchInput}
+              onChange={(event) => setSearchInput(event.target.value)}
               placeholder={t(
                 "resource-partners.directory-page.hero.search.placeholder",
               )}
               className="flex-1 bg-white border-2 border-white rounded px-4 py-3 text-gray-900 placeholder:text-gray-500 focus:outline-none focus:border-orange-500 focus:ring-2 focus:ring-orange-500"
             />
-            <select className="border-2 border-gray-300 rounded px-4 py-3 bg-white focus:outline-none focus:border-blue-900">
-              <option>
-                {t(
-                  "resource-partners.directory-page.hero.search.all-categories",
-                )}
-              </option>
-
-              {/* Reuse existing category titles from resource-partners.categories */}
-              <option>
-                {t("resource-partners.categories.items.hotels.title")}
-              </option>
-              <option>
-                {t("resource-partners.categories.items.transport.title")}
-              </option>
-              <option>
-                {t("resource-partners.categories.items.legal.title")}
-              </option>
-              <option>
-                {t("resource-partners.categories.items.financial.title")}
-              </option>
-              <option>
-                {t("resource-partners.categories.items.real-estate.title")}
-              </option>
-              <option>
-                {t("resource-partners.categories.items.staffing.title")}
-              </option>
-              <option>
-                {t("resource-partners.categories.items.translation.title")}
-              </option>
-              <option>
-                {t("resource-partners.categories.items.other.title")}
-              </option>
+            <select
+              value={categoryFilter}
+              onChange={(event) =>
+                setCategory(event.target.value as PartnerCategoryFilter)
+              }
+              className="border-2 border-gray-300 rounded px-4 py-3 bg-white focus:outline-none focus:border-blue-900"
+            >
+              {selectCategories.map((category) => (
+                <option key={category} value={category}>
+                  {category === "all"
+                    ? t(
+                        "resource-partners.directory-page.hero.search.all-categories",
+                      )
+                    : t(`resource-partners.categories.items.${category}.title`)}
+                </option>
+              ))}
             </select>
-            <button className="bg-orange-500 text-white px-6 sm:px-8 py-3 rounded hover:bg-orange-600 whitespace-nowrap">
+            <button
+              type="submit"
+              className="bg-orange-500 text-white px-6 sm:px-8 py-3 rounded hover:bg-orange-600 whitespace-nowrap"
+            >
               {t("resource-partners.directory-page.hero.search.button")}
             </button>
-          </div>
+          </form>
         </div>
       </section>
 
@@ -99,30 +285,27 @@ export default function PartnerDirectoryPage() {
       <section className="bg-white border-b border-gray-300">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex gap-3 sm:gap-6 py-4 overflow-x-auto">
-            <button className="bg-blue-900 text-white px-4 sm:px-6 py-2 rounded whitespace-nowrap text-sm sm:text-base">
-              {t("resource-partners.directory-page.tabs.all")}
-            </button>
-            <button className="bg-gray-200 text-gray-700 px-4 sm:px-6 py-2 rounded hover:bg-gray-300 whitespace-nowrap text-sm sm:text-base">
-              {t("resource-partners.directory-page.tabs.hotels")}
-            </button>
-            <button className="bg-gray-200 text-gray-700 px-4 sm:px-6 py-2 rounded hover:bg-gray-300 whitespace-nowrap text-sm sm:text-base">
-              {t("resource-partners.directory-page.tabs.transport")}
-            </button>
-            <button className="bg-gray-200 text-gray-700 px-4 sm:px-6 py-2 rounded hover:bg-gray-300 whitespace-nowrap text-sm sm:text-base">
-              {t("resource-partners.directory-page.tabs.legal")}
-            </button>
-            <button className="bg-gray-200 text-gray-700 px-4 sm:px-6 py-2 rounded hover:bg-gray-300 whitespace-nowrap text-sm sm:text-base">
-              {t("resource-partners.directory-page.tabs.financial")}
-            </button>
-            <button className="bg-gray-200 text-gray-700 px-4 sm:px-6 py-2 rounded hover:bg-gray-300 whitespace-nowrap text-sm sm:text-base">
-              {t("resource-partners.directory-page.tabs.real-estate")}
-            </button>
-            <button className="bg-gray-200 text-gray-700 px-4 sm:px-6 py-2 rounded hover:bg-gray-300 whitespace-nowrap text-sm sm:text-base">
-              {t("resource-partners.directory-page.tabs.staffing")}
-            </button>
-            <button className="bg-gray-200 text-gray-700 px-4 sm:px-6 py-2 rounded hover:bg-gray-300 whitespace-nowrap text-sm sm:text-base">
-              {t("resource-partners.directory-page.tabs.translation")}
-            </button>
+            {tabCategories.map((category) => {
+              const active = categoryFilter === category;
+
+              return (
+                <button
+                  key={category}
+                  type="button"
+                  onClick={() => setCategory(category)}
+                  className={`${
+                    active
+                      ? "bg-blue-900 text-white"
+                      : "bg-gray-200 text-gray-700 hover:bg-gray-300"
+                  } px-4 sm:px-6 py-2 rounded whitespace-nowrap text-sm sm:text-base`}
+                >
+                  {(category === "all"
+                    ? t("resource-partners.directory-page.tabs.all")
+                    : t(`resource-partners.directory-page.tabs.${category}`)) +
+                    ` (${meta.categoryCounts[category] ?? 0})`}
+                </button>
+              );
+            })}
           </div>
         </div>
       </section>
@@ -132,125 +315,23 @@ export default function PartnerDirectoryPage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-8">
             <p className="text-gray-600 text-sm sm:text-base">
-              {t("resource-partners.directory-page.results.showing")}
+              Showing {start}-{end} of {meta.total} partners
             </p>
-            <select className="border-2 border-gray-300 rounded px-4 py-2 bg-white text-sm sm:text-base">
-              <option>
-                {t(
-                  "resource-partners.directory-page.results.sort.highest-rated",
-                )}
-              </option>
-              <option>
-                {t(
-                  "resource-partners.directory-page.results.sort.most-reviews",
-                )}
-              </option>
-              <option>
-                {t("resource-partners.directory-page.results.sort.newest")}
-              </option>
-              <option>
-                {t("resource-partners.directory-page.results.sort.az")}
-              </option>
-            </select>
           </div>
 
-          {/* Partner Cards Grid */}
+          {isLoading && <p className="text-gray-600 mb-8">Loading partners...</p>}
+          {!!error && <p className="text-red-600 mb-8">{error}</p>}
+          {!isLoading && !error && partners.length === 0 && (
+            <p className="text-gray-600 mb-8">No partners found.</p>
+          )}
+
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
-            {[
-              {
-                name: "Nairobi Grand Hotel",
-                categoryKey: "hotels",
-                rating: 4.9,
-                reviews: 45,
-                location: "Westlands, Nairobi",
-              },
-              {
-                name: "Swift Transport KE",
-                categoryKey: "transport",
-                rating: 4.8,
-                reviews: 38,
-                location: "Nairobi CBD",
-              },
-              {
-                name: "Legal Partners Ltd",
-                categoryKey: "legal",
-                rating: 4.7,
-                reviews: 29,
-                location: "Upper Hill",
-              },
-              {
-                name: "Kenya Finance Co.",
-                categoryKey: "financial",
-                rating: 5.0,
-                reviews: 52,
-                location: "Westlands",
-              },
-              {
-                name: "Prime Properties",
-                categoryKey: "real-estate",
-                rating: 4.6,
-                reviews: 41,
-                location: "Karen",
-              },
-              {
-                name: "Talent Solutions",
-                categoryKey: "staffing",
-                rating: 4.8,
-                reviews: 33,
-                location: "Parklands",
-              },
-              {
-                name: "LingoBridge",
-                categoryKey: "translation",
-                rating: 5.0,
-                reviews: 27,
-                location: "Kilimani",
-              },
-              {
-                name: "Executive Suites",
-                categoryKey: "hotels",
-                rating: 4.9,
-                reviews: 36,
-                location: "Upperhill",
-              },
-              {
-                name: "Cargo Masters",
-                categoryKey: "transport",
-                rating: 4.7,
-                reviews: 44,
-                location: "Industrial Area",
-              },
-              {
-                name: "Smith & Associates",
-                categoryKey: "legal",
-                rating: 4.8,
-                reviews: 31,
-                location: "CBD",
-              },
-              {
-                name: "SafeBank Advisory",
-                categoryKey: "financial",
-                rating: 4.9,
-                reviews: 28,
-                location: "Westlands",
-              },
-              {
-                name: "Urban Spaces",
-                categoryKey: "real-estate",
-                rating: 4.6,
-                reviews: 39,
-                location: "Lavington",
-              },
-            ].map((partner, i) => (
+            {partners.map((partner) => (
               <div
-                key={i}
+                key={partner.id}
                 className="bg-gray-50 border-2 border-gray-300 rounded p-6 hover:shadow-lg transition-shadow"
               >
-                <div className="bg-gray-200 h-24 mb-4 flex items-center justify-center border border-gray-400">
-                  <span className="text-gray-500 text-sm">LOGO</span>
-                </div>
-
-                <h3 className="font-bold text-lg mb-2">{partner.name}</h3>
+                <h3 className="font-bold text-lg mb-2">{partner.companyName}</h3>
 
                 <div className="bg-blue-900 text-white text-xs px-3 py-1 rounded inline-block mb-3">
                   {t(
@@ -258,60 +339,192 @@ export default function PartnerDirectoryPage() {
                   )}
                 </div>
 
-                <div className="flex items-center gap-2 mb-2">
-                  <div className="text-orange-500">
-                    {"⭐".repeat(Math.floor(partner.rating))}
-                  </div>
-                  <span className="text-sm font-bold">{partner.rating}</span>
-                  <span className="text-sm text-gray-600">
-                    ({partner.reviews}{" "}
-                    {t("resource-partners.directory-page.partner-card.reviews")}
-                    )
-                  </span>
-                </div>
-
+                <p className="text-sm text-gray-700 mb-2">{partner.contactPerson}</p>
+                <p className="text-sm text-gray-600 mb-2">📍 {partner.location}</p>
                 <p className="text-sm text-gray-600 mb-4">
-                  📍 {partner.location}
+                  {partner.yearsInOperation} years in operation
                 </p>
 
                 <div className="flex gap-2">
-                  <button className="flex-1 bg-blue-900 text-white text-sm py-2 rounded hover:bg-blue-800">
+                  <button
+                    type="button"
+                    className="flex-1 bg-blue-900 text-white text-sm py-2 rounded text-center hover:bg-blue-800"
+                    onClick={() => setSelectedPartner(partner)}
+                  >
                     {t(
                       "resource-partners.directory-page.partner-card.buttons.view-profile",
                     )}
                   </button>
-                  <button className="flex-1 bg-green-600 text-white text-sm py-2 rounded hover:bg-green-700">
+                  <a
+                    href={getPartnerContactHref(partner.phoneOrEmail)}
+                    className="flex-1 bg-green-600 text-white text-sm py-2 rounded hover:bg-green-700 text-center"
+                  >
                     {t(
                       "resource-partners.directory-page.partner-card.buttons.contact",
                     )}
-                  </button>
+                  </a>
                 </div>
               </div>
             ))}
           </div>
 
-          {/* Pagination */}
+          <Dialog
+            open={selectedPartner !== null}
+            onOpenChange={(open) => {
+              if (!open) {
+                setSelectedPartner(null);
+              }
+            }}
+          >
+            <DialogContent className="max-h-[85vh] overflow-y-auto">
+              {selectedPartner ? (
+                <>
+                  <DialogHeader>
+                    <DialogTitle>{selectedPartner.companyName}</DialogTitle>
+                    <DialogDescription>
+                      {t(
+                        `resource-partners.categories.items.${selectedPartner.categoryKey}.title`,
+                      )}{" "}
+                      | {selectedPartner.location}
+                    </DialogDescription>
+                  </DialogHeader>
+
+                  <div className="mt-6 space-y-5">
+                    <section className="rounded-lg border border-gray-200 p-4">
+                      <h4 className="text-sm font-semibold text-gray-900 mb-2">
+                        {t("resource-partners.directory-page.profile-dialog.description")}
+                      </h4>
+                      <p className="text-sm text-gray-700 whitespace-pre-wrap">
+                        {selectedPartner.servicesOffered ||
+                          t("resource-partners.directory-page.profile-dialog.no-description")}
+                      </p>
+                    </section>
+
+                    <section className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                      <div className="rounded-lg border border-gray-200 p-3">
+                        <p className="text-xs text-gray-500">
+                          {t(
+                            "resource-partners.directory-page.profile-dialog.business-category",
+                          )}
+                        </p>
+                        <p className="text-sm font-medium text-gray-900">
+                          {selectedPartner.businessCategory}
+                        </p>
+                      </div>
+                      <div className="rounded-lg border border-gray-200 p-3">
+                        <p className="text-xs text-gray-500">
+                          {t(
+                            "resource-partners.directory-page.profile-dialog.years-in-operation",
+                          )}
+                        </p>
+                        <p className="text-sm font-medium text-gray-900">
+                          {selectedPartner.yearsInOperation}
+                        </p>
+                      </div>
+                      <div className="rounded-lg border border-gray-200 p-3 sm:col-span-2">
+                        <p className="text-xs text-gray-500">
+                          {t("resource-partners.directory-page.profile-dialog.location")}
+                        </p>
+                        <p className="text-sm font-medium text-gray-900">
+                          {selectedPartner.location}
+                        </p>
+                      </div>
+                    </section>
+
+                    {showHotelContact && (
+                      <section className="rounded-lg border border-gray-200 p-4">
+                        <h4 className="text-sm font-semibold text-gray-900 mb-2">
+                          {t(
+                            "resource-partners.directory-page.profile-dialog.contact-information",
+                          )}
+                        </h4>
+                        <div className="space-y-1 text-sm text-gray-700">
+                          <p>
+                            <span className="font-medium text-gray-900">
+                              {t(
+                                "resource-partners.directory-page.profile-dialog.contact-person",
+                              )}
+                              :
+                            </span>{" "}
+                            {selectedPartner.contactPerson}
+                          </p>
+                          <p>
+                            <span className="font-medium text-gray-900">
+                              {t(
+                                "resource-partners.directory-page.profile-dialog.phone-or-email",
+                              )}
+                              :
+                            </span>{" "}
+                            {selectedPartner.phoneOrEmail}
+                          </p>
+                        </div>
+                      </section>
+                    )}
+
+                    {selectedPartner.website && (
+                      <a
+                        href={selectedPartner.website}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center text-sm font-medium text-blue-900 hover:underline"
+                      >
+                        {t("resource-partners.directory-page.profile-dialog.visit-website")}
+                      </a>
+                    )}
+                  </div>
+
+                  <DialogFooter className="mt-6">
+                    <DialogClose asChild>
+                      <button
+                        type="button"
+                        className="rounded bg-gray-200 px-4 py-2 text-sm text-gray-800 hover:bg-gray-300"
+                      >
+                        {t("resource-partners.directory-page.profile-dialog.close")}
+                      </button>
+                    </DialogClose>
+                  </DialogFooter>
+                </>
+              ) : null}
+            </DialogContent>
+          </Dialog>
+
           <div className="flex flex-wrap justify-center items-center gap-2">
-            <button className="px-3 sm:px-4 py-2 border-2 border-gray-300 rounded hover:bg-gray-100 text-sm sm:text-base">
+            <button
+              type="button"
+              disabled={!meta.hasPreviousPage}
+              onClick={() => handlePageChange(meta.page - 1)}
+              className="px-3 sm:px-4 py-2 border-2 border-gray-300 rounded hover:bg-gray-100 text-sm sm:text-base disabled:opacity-50 disabled:cursor-not-allowed"
+            >
               {t("resource-partners.directory-page.pagination.previous")}
             </button>
-            <button className="px-3 sm:px-4 py-2 bg-blue-900 text-white rounded text-sm sm:text-base">
-              1
-            </button>
-            <button className="px-3 sm:px-4 py-2 border-2 border-gray-300 rounded hover:bg-gray-100 text-sm sm:text-base">
-              2
-            </button>
-            <button className="px-3 sm:px-4 py-2 border-2 border-gray-300 rounded hover:bg-gray-100 text-sm sm:text-base">
-              3
-            </button>
-            <button className="px-3 sm:px-4 py-2 border-2 border-gray-300 rounded hover:bg-gray-100 text-sm sm:text-base">
-              4
-            </button>
-            <span className="px-2 sm:px-4 py-2 text-sm sm:text-base">...</span>
-            <button className="px-3 sm:px-4 py-2 border-2 border-gray-300 rounded hover:bg-gray-100 text-sm sm:text-base">
-              17
-            </button>
-            <button className="px-3 sm:px-4 py-2 border-2 border-gray-300 rounded hover:bg-gray-100 text-sm sm:text-base">
+
+            {paginationItems.map((item, index) =>
+              item === "ellipsis" ? (
+                <span key={`ellipsis-${index}`} className="px-2 sm:px-4 py-2 text-sm sm:text-base">
+                  ...
+                </span>
+              ) : (
+                <button
+                  key={item}
+                  type="button"
+                  onClick={() => handlePageChange(item)}
+                  className={`px-3 sm:px-4 py-2 rounded text-sm sm:text-base ${
+                    item === meta.page
+                      ? "bg-blue-900 text-white"
+                      : "border-2 border-gray-300 hover:bg-gray-100"
+                  }`}
+                >
+                  {item}
+                </button>
+              ),
+            )}
+
+            <button
+              type="button"
+              disabled={!meta.hasNextPage}
+              onClick={() => handlePageChange(meta.page + 1)}
+              className="px-3 sm:px-4 py-2 border-2 border-gray-300 rounded hover:bg-gray-100 text-sm sm:text-base disabled:opacity-50 disabled:cursor-not-allowed"
+            >
               {t("resource-partners.directory-page.pagination.next")}
             </button>
           </div>

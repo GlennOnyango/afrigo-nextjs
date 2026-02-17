@@ -3,15 +3,105 @@
 
 import Link from "next/link";
 import { useTranslation } from "react-i18next";
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { toast } from "sonner";
 import { registerPartner } from "../actions";
+import {
+  PARTNER_CATEGORY_KEYS,
+  type PartnerCategoryFilter,
+  type PartnerCategoryKey,
+} from "@/lib/partners";
+import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+
+type PartnerDirectoryItem = {
+  id: string;
+  companyName: string;
+  contactPerson: string;
+  phoneOrEmail: string;
+  businessCategory: string;
+  yearsInOperation: number;
+  location: string;
+  servicesOffered: string;
+  website: string | null;
+  categoryKey: PartnerCategoryKey;
+};
+
+const categoryOptions: PartnerCategoryFilter[] = ["all", ...PARTNER_CATEGORY_KEYS];
+
+function getPartnerContactHref(phoneOrEmail: string) {
+  return phoneOrEmail.includes("@")
+    ? `mailto:${phoneOrEmail}`
+    : `tel:${phoneOrEmail}`;
+}
 
 export default function ResourcePartnersPage() {
   const { t } = useTranslation();
   const [formState, setFormState] = useState<{ success: boolean; message: string } | null>(null);
   const [loading, setLoading] = useState(false);
+  const [searchInput, setSearchInput] = useState("");
+  const [searchQuery, setSearchQuery] = useState("");
+  const [categoryFilter, setCategoryFilter] = useState<PartnerCategoryFilter>("all");
+  const [previewPartners, setPreviewPartners] = useState<PartnerDirectoryItem[]>([]);
+  const [selectedPartner, setSelectedPartner] = useState<PartnerDirectoryItem | null>(null);
+  const [isPreviewLoading, setIsPreviewLoading] = useState(false);
+  const [previewError, setPreviewError] = useState("");
   const formRef = useRef<HTMLFormElement>(null);
+  const showHotelContact = selectedPartner?.categoryKey === "hotels";
+
+  useEffect(() => {
+    let mounted = true;
+
+    async function fetchPreviewPartners() {
+      setIsPreviewLoading(true);
+      setPreviewError("");
+
+      const params = new URLSearchParams({
+        limit: "3",
+        q: searchQuery,
+        category: categoryFilter,
+      });
+
+      try {
+        const response = await fetch(`/api/partners?${params.toString()}`);
+        if (!response.ok) {
+          throw new Error("failed to fetch");
+        }
+
+        const data = await response.json();
+        if (mounted) {
+          setPreviewPartners(data.partners ?? []);
+        }
+      } catch {
+        if (mounted) {
+          setPreviewPartners([]);
+          setPreviewError("Failed to load partners.");
+        }
+      } finally {
+        if (mounted) {
+          setIsPreviewLoading(false);
+        }
+      }
+    }
+
+    fetchPreviewPartners();
+
+    return () => {
+      mounted = false;
+    };
+  }, [searchQuery, categoryFilter]);
+
+  function handleDirectorySearch(event: React.FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    setSearchQuery(searchInput.trim());
+  }
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -175,107 +265,210 @@ export default function ResourcePartnersPage() {
             {t("resource-partners.directory.description")}
           </p>
 
-          <div className="flex flex-col sm:flex-row gap-4 mb-8 max-w-4xl mx-auto">
+          <form
+            className="flex flex-col sm:flex-row gap-4 mb-8 max-w-4xl mx-auto"
+            onSubmit={handleDirectorySearch}
+          >
             <input
               type="text"
+              value={searchInput}
+              onChange={(event) => setSearchInput(event.target.value)}
               placeholder={t("resource-partners.directory.search.placeholder")}
               className="flex-1 border-2 border-gray-300 rounded px-4 py-3 focus:outline-none focus:border-blue-900"
             />
-            <select className="border-2 border-gray-300 rounded px-4 py-3 bg-white focus:outline-none focus:border-blue-900">
-              <option>
-                {t("resource-partners.directory.search.category-filter")}
-              </option>
-              <option>
-                {t("resource-partners.categories.items.hotels.title")}
-              </option>
-              <option>
-                {t("resource-partners.categories.items.transport.title")}
-              </option>
-              <option>
-                {t("resource-partners.categories.items.legal.title")}
-              </option>
-              <option>
-                {t("resource-partners.categories.items.financial.title")}
-              </option>
-              <option>
-                {t("resource-partners.categories.items.real-estate.title")}
-              </option>
-              <option>
-                {t("resource-partners.categories.items.staffing.title")}
-              </option>
-              <option>
-                {t("resource-partners.categories.items.translation.title")}
-              </option>
-              <option>
-                {t("resource-partners.categories.items.other.title")}
-              </option>
+            <select
+              value={categoryFilter}
+              onChange={(event) =>
+                setCategoryFilter(event.target.value as PartnerCategoryFilter)
+              }
+              className="border-2 border-gray-300 rounded px-4 py-3 bg-white focus:outline-none focus:border-blue-900"
+            >
+              {categoryOptions.map((category) => (
+                <option key={category} value={category}>
+                  {category === "all"
+                    ? t("resource-partners.directory.search.category-filter")
+                    : t(`resource-partners.categories.items.${category}.title`)}
+                </option>
+              ))}
             </select>
-            <button className="bg-orange-500 text-white px-6 sm:px-8 py-3 rounded hover:bg-orange-600 whitespace-nowrap">
+            <button
+              type="submit"
+              className="bg-orange-500 text-white px-6 sm:px-8 py-3 rounded hover:bg-orange-600 whitespace-nowrap"
+            >
               {t("resource-partners.directory.search.button")}
             </button>
-          </div>
+          </form>
+
+          {isPreviewLoading && (
+            <p className="text-center text-gray-600 mb-8">Loading partners...</p>
+          )}
+          {!!previewError && (
+            <p className="text-center text-red-600 mb-8">{previewError}</p>
+          )}
+          {!isPreviewLoading && !previewError && previewPartners.length === 0 && (
+            <p className="text-center text-gray-600 mb-8">No partners found.</p>
+          )}
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
-            {[
-              {
-                nameKey: "p1",
-                ratingKey: "r1",
-              },
-              {
-                nameKey: "p2",
-                ratingKey: "r2",
-              },
-              {
-                nameKey: "p3",
-                ratingKey: "r3",
-              },
-            ].map((p, i) => (
+            {previewPartners.map((partner) => (
               <div
-                key={i}
+                key={partner.id}
                 className="bg-gray-50 border-2 border-gray-300 rounded p-6"
               >
-                <div className="bg-gray-200 h-20 mb-4 flex items-center justify-center border border-gray-400">
-                  <span className="text-gray-500 text-xs">LOGO</span>
-                </div>
-
-                <h3 className="font-bold mb-2">
-                  {t(
-                    `resource-partners.directory.preview.partners.${p.nameKey}.name`,
-                  )}
-                </h3>
+                <h3 className="font-bold mb-2">{partner.companyName}</h3>
 
                 <div className="bg-blue-900 text-white text-xs px-3 py-1 rounded inline-block mb-3">
                   {t(
-                    `resource-partners.directory.preview.partners.${p.nameKey}.category`,
+                    `resource-partners.categories.items.${partner.categoryKey}.title`,
                   )}
                 </div>
 
-                <p className="text-sm text-orange-500 mb-2">
-                  {t(
-                    `resource-partners.directory.preview.rating-labels.${p.ratingKey}`,
-                  )}
+                <p className="text-sm text-gray-700 mb-2">
+                  {partner.contactPerson}
                 </p>
-
-                <p className="text-sm text-gray-600 mb-4">
-                  📍{" "}
-                  {t(
-                    `resource-partners.directory.preview.partners.${p.nameKey}.location`,
-                  )}
-                </p>
+                <p className="text-sm text-gray-600 mb-2">📍 {partner.location}</p>
+                <p className="text-sm text-gray-600 mb-4">{partner.servicesOffered}</p>
 
                 <div className="flex gap-2">
-                  <button className="flex-1 bg-blue-900 text-white text-sm py-2 rounded hover:bg-blue-800">
+                  <button
+                    type="button"
+                    onClick={() => setSelectedPartner(partner)}
+                    className="flex-1 bg-blue-900 text-white text-sm py-2 rounded hover:bg-blue-800 text-center"
+                  >
                     {t(
                       "resource-partners.directory.preview.buttons.view-profile",
                     )}
                   </button>
-                  <button className="flex-1 bg-green-600 text-white text-sm py-2 rounded hover:bg-green-700">
+                  <a
+                    href={getPartnerContactHref(partner.phoneOrEmail)}
+                    className="flex-1 bg-green-600 text-white text-sm py-2 rounded hover:bg-green-700 text-center"
+                  >
                     {t("resource-partners.directory.preview.buttons.contact")}
-                  </button>
+                  </a>
                 </div>
               </div>
             ))}
           </div>
+
+          <Dialog
+            open={selectedPartner !== null}
+            onOpenChange={(open) => {
+              if (!open) {
+                setSelectedPartner(null);
+              }
+            }}
+          >
+            <DialogContent className="max-h-[85vh] overflow-y-auto">
+              {selectedPartner ? (
+                <>
+                  <DialogHeader>
+                    <DialogTitle>{selectedPartner.companyName}</DialogTitle>
+                    <DialogDescription>
+                      {t(
+                        `resource-partners.categories.items.${selectedPartner.categoryKey}.title`,
+                      )}{" "}
+                      | {selectedPartner.location}
+                    </DialogDescription>
+                  </DialogHeader>
+
+                  <div className="mt-6 space-y-5">
+                    <section className="rounded-lg border border-gray-200 p-4">
+                      <h4 className="text-sm font-semibold text-gray-900 mb-2">
+                        {t("resource-partners.directory-page.profile-dialog.description")}
+                      </h4>
+                      <p className="text-sm text-gray-700 whitespace-pre-wrap">
+                        {selectedPartner.servicesOffered ||
+                          t("resource-partners.directory-page.profile-dialog.no-description")}
+                      </p>
+                    </section>
+
+                    <section className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                      <div className="rounded-lg border border-gray-200 p-3">
+                        <p className="text-xs text-gray-500">
+                          {t(
+                            "resource-partners.directory-page.profile-dialog.business-category",
+                          )}
+                        </p>
+                        <p className="text-sm font-medium text-gray-900">
+                          {selectedPartner.businessCategory}
+                        </p>
+                      </div>
+                      <div className="rounded-lg border border-gray-200 p-3">
+                        <p className="text-xs text-gray-500">
+                          {t(
+                            "resource-partners.directory-page.profile-dialog.years-in-operation",
+                          )}
+                        </p>
+                        <p className="text-sm font-medium text-gray-900">
+                          {selectedPartner.yearsInOperation}
+                        </p>
+                      </div>
+                      <div className="rounded-lg border border-gray-200 p-3 sm:col-span-2">
+                        <p className="text-xs text-gray-500">
+                          {t("resource-partners.directory-page.profile-dialog.location")}
+                        </p>
+                        <p className="text-sm font-medium text-gray-900">
+                          {selectedPartner.location}
+                        </p>
+                      </div>
+                    </section>
+
+                    {showHotelContact && (
+                      <section className="rounded-lg border border-gray-200 p-4">
+                        <h4 className="text-sm font-semibold text-gray-900 mb-2">
+                          {t(
+                            "resource-partners.directory-page.profile-dialog.contact-information",
+                          )}
+                        </h4>
+                        <div className="space-y-1 text-sm text-gray-700">
+                          <p>
+                            <span className="font-medium text-gray-900">
+                              {t(
+                                "resource-partners.directory-page.profile-dialog.contact-person",
+                              )}
+                              :
+                            </span>{" "}
+                            {selectedPartner.contactPerson}
+                          </p>
+                          <p>
+                            <span className="font-medium text-gray-900">
+                              {t(
+                                "resource-partners.directory-page.profile-dialog.phone-or-email",
+                              )}
+                              :
+                            </span>{" "}
+                            {selectedPartner.phoneOrEmail}
+                          </p>
+                        </div>
+                      </section>
+                    )}
+
+                    {selectedPartner.website && (
+                      <a
+                        href={selectedPartner.website}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center text-sm font-medium text-blue-900 hover:underline"
+                      >
+                        {t("resource-partners.directory-page.profile-dialog.visit-website")}
+                      </a>
+                    )}
+                  </div>
+
+                  <DialogFooter className="mt-6">
+                    <DialogClose asChild>
+                      <button
+                        type="button"
+                        className="rounded bg-gray-200 px-4 py-2 text-sm text-gray-800 hover:bg-gray-300"
+                      >
+                        {t("resource-partners.directory-page.profile-dialog.close")}
+                      </button>
+                    </DialogClose>
+                  </DialogFooter>
+                </>
+              ) : null}
+            </DialogContent>
+          </Dialog>
 
           <div className="text-center">
             <a
@@ -374,35 +567,35 @@ export default function ResourcePartnersPage() {
                     className="w-full border-2 border-gray-300 rounded px-4 py-3 bg-white focus:outline-none focus:border-blue-900"
                     required
                   >
-                    <option>
+                    <option value="" disabled>
                       {t("resource-partners.form.fields.select-category")}
                     </option>
-                    <option>
+                    <option value="hotels">
                       {t("resource-partners.categories.items.hotels.title")}
                     </option>
-                    <option>
+                    <option value="transport">
                       {t("resource-partners.categories.items.transport.title")}
                     </option>
-                    <option>
+                    <option value="legal">
                       {t("resource-partners.categories.items.legal.title")}
                     </option>
-                    <option>
+                    <option value="financial">
                       {t("resource-partners.categories.items.financial.title")}
                     </option>
-                    <option>
+                    <option value="real-estate">
                       {t(
                         "resource-partners.categories.items.real-estate.title",
                       )}
                     </option>
-                    <option>
+                    <option value="staffing">
                       {t("resource-partners.categories.items.staffing.title")}
                     </option>
-                    <option>
+                    <option value="translation">
                       {t(
                         "resource-partners.categories.items.translation.title",
                       )}
                     </option>
-                    <option>
+                    <option value="other">
                       {t("resource-partners.categories.items.other.title")}
                     </option>
                   </select>

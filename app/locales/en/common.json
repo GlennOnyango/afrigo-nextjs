@@ -984,14 +984,14 @@
         }
       },
       "tabs": {
-        "all": "All Partners (200+)",
-        "hotels": "Hotels (28)",
-        "transport": "Transport (35)",
-        "legal": "Legal (22)",
-        "financial": "Financial (18)",
-        "real-estate": "Real Estate (31)",
-        "staffing": "Staffing (24)",
-        "translation": "Translation (15)"
+        "all": "All Partners",
+        "hotels": "Hotels",
+        "transport": "Transport",
+        "legal": "Legal",
+        "financial": "Financial",
+        "real-estate": "Real Estate",
+        "staffing": "Staffing",
+        "translation": "Translation"
       },
       "results": {
         "showing": "Showing 1-12 of 200+ partners",
@@ -1008,6 +1008,18 @@
           "view-profile": "View Profile",
           "contact": "Contact"
         }
+      },
+      "profile-dialog": {
+        "description": "Description",
+        "no-description": "No description provided.",
+        "business-category": "Business Category",
+        "years-in-operation": "Years in Operation",
+        "location": "Location",
+        "contact-information": "Contact Information",
+        "contact-person": "Contact Person",
+        "phone-or-email": "Phone/Email",
+        "visit-website": "Visit Website",
+        "close": "Close"
       },
       "pagination": {
         "previous": "Previous",
