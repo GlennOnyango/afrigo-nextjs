@@ -240,11 +240,11 @@ export default function PromoterPage() {
               disabled={loading}
             >
               {loading
-                ? t("promoter.form.submitting")
+                ? t("Submitting")
                 : t("promoter.form.button")}
             </button>
 
-            <p className="text-center text-xs sm:text-sm text-gray-600">
+            {/* <p className="text-center text-xs sm:text-sm text-gray-600">
               {t("promoter.form.already")}{" "}
               <a
                 href="#"
@@ -256,7 +256,7 @@ export default function PromoterPage() {
               >
                 {t("promoter.form.login")}
               </a>
-            </p>
+            </p> */}
           </form>
         </div>
       </section>
