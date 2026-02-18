@@ -72,10 +72,13 @@ function createEmptyCategoryCounts(): Record<PartnerCategoryFilter, number> {
   };
 }
 
-function getPartnerContactHref(phoneOrEmail: string) {
-  return phoneOrEmail.includes("@")
-    ? `mailto:${phoneOrEmail}`
-    : `tel:${phoneOrEmail}`;
+function getPartnerContactHref(partner: PartnerDirectoryItem) {
+  const email =
+    partner.categoryKey === "hotels" && partner.phoneOrEmail.includes("@")
+      ? partner.phoneOrEmail
+      : "inquire@afrigo.com";
+
+  return `mailto:${email}`;
 }
 
 function buildPageItems(currentPage: number, totalPages: number) {
@@ -356,7 +359,7 @@ export default function PartnerDirectoryPage() {
                     )}
                   </button>
                   <a
-                    href={getPartnerContactHref(partner.phoneOrEmail)}
+                    href={getPartnerContactHref(partner)}
                     className="flex-1 bg-green-600 text-white text-sm py-2 rounded hover:bg-green-700 text-center"
                   >
                     {t(
