@@ -4,11 +4,13 @@ import Link from "next/link";
 import { useTranslation } from "react-i18next";
 import { usePathname, useRouter } from "next/navigation";
 import { useTransition } from "react";
+import { Menu } from "lucide-react";
 
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
+  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 
@@ -41,34 +43,46 @@ export function Navbar({ isAuthenticated }: { isAuthenticated?: boolean }) {
 
   return (
     <header className="sticky top-0 z-50 w-full border-b border-black/5 bg-white/95 backdrop-blur">
-      <div className="mx-auto flex w-full items-center justify-between px-6 py-4">
-        <Link
-          href="/"
-          className="rounded-md bg-primary px-3 py-1.5 text-sm font-semibold tracking-widest text-white"
-        >
-          AFRIGO
-        </Link>
-
-        <nav className="hidden items-center gap-6 text-sm font-medium text-foreground md:flex">
-          {navLinks.map((link) => (
-            <Link
-              key={link.label}
-              href={link.href}
-              className={`transition-colors hover:text-primary ${
-                link.href === pathname ? "text-primary" : ""
-              }`}
-              aria-current={link.href === pathname ? "page" : undefined}
+      <div className="mx-auto w-full px-6 py-4">
+        <div className="flex items-center justify-between md:hidden">
+          <DropdownMenu>
+            <DropdownMenuTrigger
+              aria-label="Open navigation menu"
+              className="rounded-full border border-black/10 p-2 text-foreground transition-colors hover:border-primary/40 hover:text-primary"
             >
-              {t(`navLinks.${link.label}`)}
-            </Link>
-          ))}
-        </nav>
+              <Menu className="size-5" />
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="start" className="w-52">
+              {navLinks.map((link) => (
+                <DropdownMenuItem
+                  key={link.label}
+                  onSelect={() => router.push(link.href)}
+                  className={link.href === pathname ? "text-primary" : ""}
+                >
+                  {t(`navLinks.${link.label}`)}
+                </DropdownMenuItem>
+              ))}
+              {isAuthenticated && (
+                <>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem onSelect={handleLogout} disabled={pending}>
+                    {pending ? "Logging out..." : "Logout"}
+                  </DropdownMenuItem>
+                </>
+              )}
+            </DropdownMenuContent>
+          </DropdownMenu>
 
-        <div className="flex items-center gap-3">
-          {/* Language dropdown */}
+          <Link
+            href="/"
+            className="rounded-md bg-primary px-3 py-1.5 text-sm font-semibold tracking-widest text-white"
+          >
+            AFRIGO
+          </Link>
+
           <DropdownMenu>
             <DropdownMenuTrigger className="flex items-center gap-2 rounded-full border border-black/10 px-3 py-1.5 text-sm font-medium text-foreground transition-colors hover:border-primary/40 hover:text-primary">
-              {t("language")}: {currentLanguage.toUpperCase()}
+              {currentLanguage.toUpperCase()}
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
               <DropdownMenuItem onClick={() => i18n.changeLanguage("en")}>
@@ -79,17 +93,56 @@ export function Navbar({ isAuthenticated }: { isAuthenticated?: boolean }) {
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
+        </div>
 
-          {/* Logout button (only show when authenticated) */}
-          {isAuthenticated && (
-            <button
-              onClick={handleLogout}
-              disabled={pending}
-              className="rounded-full border border-black/10 px-3 py-1.5 text-sm font-medium transition-colors hover:border-primary/40 hover:text-primary disabled:opacity-60"
-            >
-              {pending ? "Logging out..." : "Logout"}
-            </button>
-          )}
+        <div className="hidden items-center justify-between md:flex">
+          <Link
+            href="/"
+            className="rounded-md bg-primary px-3 py-1.5 text-sm font-semibold tracking-widest text-white"
+          >
+            AFRIGO
+          </Link>
+
+          <nav className="flex items-center gap-6 text-sm font-medium text-foreground">
+            {navLinks.map((link) => (
+              <Link
+                key={link.label}
+                href={link.href}
+                className={`transition-colors hover:text-primary ${
+                  link.href === pathname ? "text-primary" : ""
+                }`}
+                aria-current={link.href === pathname ? "page" : undefined}
+              >
+                {t(`navLinks.${link.label}`)}
+              </Link>
+            ))}
+          </nav>
+
+          <div className="flex items-center gap-3">
+            <DropdownMenu>
+              <DropdownMenuTrigger className="flex items-center gap-2 rounded-full border border-black/10 px-3 py-1.5 text-sm font-medium text-foreground transition-colors hover:border-primary/40 hover:text-primary">
+                {t("language")}: {currentLanguage.toUpperCase()}
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end">
+                <DropdownMenuItem onClick={() => i18n.changeLanguage("en")}>
+                  {t("english")}
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={() => i18n.changeLanguage("cn")}>
+                  {t("chinese")}
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+
+            {isAuthenticated && (
+              <button
+                onClick={handleLogout}
+                disabled={pending}
+                className="rounded-full border border-black/10 px-3 py-1.5 text-sm font-medium transition-colors hover:border-primary/40 hover:text-primary disabled:opacity-60"
+              >
+                {pending ? "Logging out..." : "Logout"}
+              </button>
+            )}
+          </div>
         </div>
       </div>
     </header>
