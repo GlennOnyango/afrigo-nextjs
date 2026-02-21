@@ -8,16 +8,19 @@ interface PromotersTableProps {
   onToggleCleared: (id: string, cleared: boolean) => void;
 }
 
-export function PromotersDataTable({ data, onToggleCleared }: PromotersTableProps) {
+export function PromotersDataTable({
+  data,
+  onToggleCleared,
+}: PromotersTableProps) {
   const [isPending, startTransition] = useTransition();
   const columns = getPromoterColumns((id, cleared) => (
     <button
-      className="bg-blue-600 text-white px-3 py-1 rounded"
+      className={`${cleared ? "bg-red-600" : "bg-blue-600"} text-white px-3 py-1 rounded`}
       type="button"
       disabled={isPending}
       onClick={() => startTransition(() => onToggleCleared(id, cleared))}
     >
-      {cleared ? "Set as Not Cleared" : "Set as Cleared"}
+      {cleared ? "Deactivate" : "Activate"}
     </button>
   ));
   return <DataTable columns={columns} data={data} />;

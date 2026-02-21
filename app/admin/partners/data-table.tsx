@@ -12,12 +12,12 @@ export function PartnersDataTable({ data, onToggleCleared }: PartnersTableProps)
   const [isPending, startTransition] = useTransition();
   const columns = getPartnerColumns((id, cleared) => (
     <button
-      className="bg-blue-600 text-white px-3 py-1 rounded"
+      className={`${cleared ? "bg-red-600" : "bg-blue-600"} text-white px-3 py-1 rounded`}
       type="button"
       disabled={isPending}
       onClick={() => startTransition(() => onToggleCleared(id, cleared))}
     >
-      {cleared ? "Set as Not Cleared" : "Set as Cleared"}
+      {cleared ? "Deactivate" : "Activate"}
     </button>
   ));
   return <DataTable columns={columns} data={data} />;

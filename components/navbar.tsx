@@ -25,6 +25,7 @@ const navLinks = [
   { label: "contact", href: "/contact" },
   { label: "news", href: "/news" },
 ];
+const adminLink = { label: "admin", href: "/admin" };
 
 export function Navbar({ isAuthenticated }: { isAuthenticated?: boolean }) {
   const { i18n, t } = useTranslation();
@@ -53,7 +54,7 @@ export function Navbar({ isAuthenticated }: { isAuthenticated?: boolean }) {
               <Menu className="size-5" />
             </DropdownMenuTrigger>
             <DropdownMenuContent align="start" className="w-52">
-              {navLinks.map((link) => (
+              {[...navLinks, ...(isAuthenticated ? [adminLink] : [])].map((link) => (
                 <DropdownMenuItem
                   key={link.label}
                   onSelect={() => router.push(link.href)}
@@ -104,7 +105,7 @@ export function Navbar({ isAuthenticated }: { isAuthenticated?: boolean }) {
           </Link>
 
           <nav className="flex items-center gap-6 text-sm font-medium text-foreground">
-            {navLinks.map((link) => (
+            {[...navLinks, ...(isAuthenticated ? [adminLink] : [])].map((link) => (
               <Link
                 key={link.label}
                 href={link.href}

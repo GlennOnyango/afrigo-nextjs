@@ -63,7 +63,7 @@ export function getPromoterColumns(toggleCleared: (id: string, cleared: boolean)
         const linkUrl = resolveUrl(value);
         return value ? (
           <a href={linkUrl} target="_blank" rel="noreferrer" className="text-blue-700 underline break-all">
-            {linkUrl}
+            {"View Link"}
           </a>
         ) : "-";
       },
@@ -90,7 +90,6 @@ export function getPromoterColumns(toggleCleared: (id: string, cleared: boolean)
                 className="h-16 w-16 rounded border object-contain"
               />
             </a>
-            <p>{qrUrl}</p>
             <a href={qrUrl} target="_blank" rel="noreferrer" className="text-blue-700 underline">
               Open
             </a>
