@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useTranslation } from "react-i18next";
 import { usePathname, useRouter } from "next/navigation";
 import { useTransition } from "react";
-import { Menu } from "lucide-react";
+import { CircleUser, Menu } from "lucide-react";
 
 import {
   DropdownMenu,
@@ -25,7 +25,6 @@ const navLinks = [
   { label: "contact", href: "/contact" },
   { label: "news", href: "/news" },
 ];
-const adminLink = { label: "admin", href: "/admin" };
 
 export function Navbar({ isAuthenticated }: { isAuthenticated?: boolean }) {
   const { i18n, t } = useTranslation();
@@ -54,7 +53,7 @@ export function Navbar({ isAuthenticated }: { isAuthenticated?: boolean }) {
               <Menu className="size-5" />
             </DropdownMenuTrigger>
             <DropdownMenuContent align="start" className="w-52">
-              {[...navLinks, ...(isAuthenticated ? [adminLink] : [])].map((link) => (
+              {navLinks.map((link) => (
                 <DropdownMenuItem
                   key={link.label}
                   onSelect={() => router.push(link.href)}
@@ -63,14 +62,6 @@ export function Navbar({ isAuthenticated }: { isAuthenticated?: boolean }) {
                   {t(`navLinks.${link.label}`)}
                 </DropdownMenuItem>
               ))}
-              {isAuthenticated && (
-                <>
-                  <DropdownMenuSeparator />
-                  <DropdownMenuItem onSelect={handleLogout} disabled={pending}>
-                    {pending ? "Logging out..." : "Logout"}
-                  </DropdownMenuItem>
-                </>
-              )}
             </DropdownMenuContent>
           </DropdownMenu>
 
@@ -81,19 +72,52 @@ export function Navbar({ isAuthenticated }: { isAuthenticated?: boolean }) {
             AFRIGO
           </Link>
 
-          <DropdownMenu>
-            <DropdownMenuTrigger className="flex items-center gap-2 rounded-full border border-black/10 px-3 py-1.5 text-sm font-medium text-foreground transition-colors hover:border-primary/40 hover:text-primary">
-              {currentLanguage.toUpperCase()}
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end">
-              <DropdownMenuItem onClick={() => i18n.changeLanguage("en")}>
-                {t("english")}
-              </DropdownMenuItem>
-              <DropdownMenuItem onClick={() => i18n.changeLanguage("cn")}>
-                {t("chinese")}
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
+          <div className="flex items-center gap-2">
+            <DropdownMenu>
+              <DropdownMenuTrigger className="flex items-center gap-2 rounded-full border border-black/10 px-3 py-1.5 text-sm font-medium text-foreground transition-colors hover:border-primary/40 hover:text-primary">
+                {currentLanguage.toUpperCase()}
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end">
+                <DropdownMenuItem onClick={() => i18n.changeLanguage("en")}>
+                  {t("english")}
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={() => i18n.changeLanguage("cn")}>
+                  {t("chinese")}
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+
+            <DropdownMenu>
+              <DropdownMenuTrigger
+                aria-label="Open user menu"
+                className="rounded-full border border-black/10 p-2 text-foreground transition-colors hover:border-primary/40 hover:text-primary"
+              >
+                <CircleUser className="size-5" />
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end">
+                {isAuthenticated ? (
+                  <>
+                    <DropdownMenuItem onSelect={() => router.push("/admin")}>
+                      Admin
+                    </DropdownMenuItem>
+                    <DropdownMenuSeparator />
+                    <DropdownMenuItem onSelect={handleLogout} disabled={pending}>
+                      {pending ? "Logging out..." : "Logout"}
+                    </DropdownMenuItem>
+                  </>
+                ) : (
+                  <>
+                    <DropdownMenuItem onSelect={() => router.push("/signin")}>
+                      Sign In
+                    </DropdownMenuItem>
+                    <DropdownMenuItem onSelect={() => router.push("/signup")}>
+                      Sign Up
+                    </DropdownMenuItem>
+                  </>
+                )}
+              </DropdownMenuContent>
+            </DropdownMenu>
+          </div>
         </div>
 
         <div className="hidden items-center justify-between md:flex">
@@ -105,7 +129,7 @@ export function Navbar({ isAuthenticated }: { isAuthenticated?: boolean }) {
           </Link>
 
           <nav className="flex items-center gap-6 text-sm font-medium text-foreground">
-            {[...navLinks, ...(isAuthenticated ? [adminLink] : [])].map((link) => (
+            {navLinks.map((link) => (
               <Link
                 key={link.label}
                 href={link.href}
@@ -134,15 +158,36 @@ export function Navbar({ isAuthenticated }: { isAuthenticated?: boolean }) {
               </DropdownMenuContent>
             </DropdownMenu>
 
-            {isAuthenticated && (
-              <button
-                onClick={handleLogout}
-                disabled={pending}
-                className="rounded-full border border-black/10 px-3 py-1.5 text-sm font-medium transition-colors hover:border-primary/40 hover:text-primary disabled:opacity-60"
+            <DropdownMenu>
+              <DropdownMenuTrigger
+                aria-label="Open user menu"
+                className="rounded-full border border-black/10 p-2 text-foreground transition-colors hover:border-primary/40 hover:text-primary"
               >
-                {pending ? "Logging out..." : "Logout"}
-              </button>
-            )}
+                <CircleUser className="size-5" />
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end">
+                {isAuthenticated ? (
+                  <>
+                    <DropdownMenuItem onSelect={() => router.push("/admin")}>
+                      Admin
+                    </DropdownMenuItem>
+                    <DropdownMenuSeparator />
+                    <DropdownMenuItem onSelect={handleLogout} disabled={pending}>
+                      {pending ? "Logging out..." : "Logout"}
+                    </DropdownMenuItem>
+                  </>
+                ) : (
+                  <>
+                    <DropdownMenuItem onSelect={() => router.push("/signin")}>
+                      Sign In
+                    </DropdownMenuItem>
+                    <DropdownMenuItem onSelect={() => router.push("/signup")}>
+                      Sign Up
+                    </DropdownMenuItem>
+                  </>
+                )}
+              </DropdownMenuContent>
+            </DropdownMenu>
           </div>
         </div>
       </div>
