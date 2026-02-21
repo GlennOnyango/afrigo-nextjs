@@ -141,13 +141,13 @@ export async function registerPromoter(formData: FormData) {
         process.env.NEXT_PUBLIC_SITE_URL,
       ) || "http://localhost:3000";
     const referralLink = new URL(`/r/${referralCode}`, `${siteUrl}/`).toString();
-    let qrImageUrl = `https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=${encodeURIComponent(referralLink)}`;
+    const qrImageUrl = referralQrApiPath(referralCode);
 
     try {
-      qrImageUrl = await generateAndStoreQrCode(referralCode, referralLink);
+      await generateAndStoreQrCode(referralCode, referralLink);
     } catch (qrError) {
       console.error(
-        "Failed to upload QR image to Railway bucket, using remote QR URL.",
+        "Failed to upload QR image to Railway bucket.",
         qrError,
       );
     }
@@ -262,7 +262,6 @@ async function generateAndStoreQrCode(referralCode: string, referralLink: string
 
   const qrBuffer = new Uint8Array(await response.arrayBuffer());
   await uploadReferralQrCode(referralCode, qrBuffer);
-  return referralQrApiPath(referralCode);
 }
 
 const resend = new Resend(process.env.RESEND_API_KEY);
