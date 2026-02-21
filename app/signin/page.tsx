@@ -21,6 +21,8 @@ export default function SignInPage() {
   }
 
   return (
+    <div className="flex flex-row items-center justify-center min-h-screen bg-gray-50">
+
     <div className="max-w-md mx-auto mt-10 p-6 border rounded">
       <h1 className="text-2xl mb-4">Sign In</h1>
       <form onSubmit={handleSubmit}>
@@ -43,6 +45,7 @@ export default function SignInPage() {
         {error && <div className="text-red-500 mb-2">{error}</div>}
         <button type="submit" className="w-full bg-blue-600 text-white p-2 rounded">Sign In</button>
       </form>
+    </div>
     </div>
   );
 }
